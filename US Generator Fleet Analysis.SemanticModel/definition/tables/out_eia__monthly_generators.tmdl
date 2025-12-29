@@ -1070,11 +1070,12 @@ table out_eia__monthly_generators
 
 	partition out_eia__monthly_generators = m
 		mode: import
-		source =
+		source = ```
 				let
-				    Source = Parquet.Document(File.Contents("F:\Power BI Projects\9. US Generator Fleet Analysis\Assets\out_eia__monthly_generators.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				    Source = Parquet.Document(File.Contents("F:\Power BI Projects\9. US Generator Fleet Analysis\Assets\out_eia__monthly_generators.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])    
 				in
 				    Source
+				```
 
 	annotation PBI_NavigationStepName = Navigation
 

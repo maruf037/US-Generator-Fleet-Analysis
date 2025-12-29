@@ -8,7 +8,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["out_eia__monthly_generators"]
+annotation PBI_QueryOrder = ["out_eia__monthly_generators","DimDate"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
@@ -25,6 +25,8 @@ ref table LocalDateTable_7601235b-ce84-4471-a698-6fb09f34d3ab
 ref table LocalDateTable_8d1bf890-1830-475e-afec-146b8e266c9d
 ref table LocalDateTable_2ae6322d-9f7e-4c5a-89db-d90da080cb06
 ref table LocalDateTable_97730416-de09-4dd9-9157-70f3296d5a2d
+ref table DimDate
+ref table LocalDateTable_1d01f919-9d2e-442a-8f0c-021ced574db4
 
 ref cultureInfo en-US
 

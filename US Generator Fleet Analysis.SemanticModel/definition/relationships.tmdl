@@ -53,3 +53,8 @@ relationship ae2a4cdf-2a39-4f9e-b60c-58264fa084d9
 	fromColumn: out_eia__monthly_generators.uprate_derate_completed_date
 	toColumn: LocalDateTable_97730416-de09-4dd9-9157-70f3296d5a2d.Date
 
+relationship 8a4600d9-3966-41e0-9100-89267117d4d4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimDate.Date
+	toColumn: LocalDateTable_1d01f919-9d2e-442a-8f0c-021ced574db4.Date
+
