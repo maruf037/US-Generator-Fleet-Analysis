@@ -453,9 +453,9 @@ Special thanks to the open-source community for Power BI best practices and DAX 
 ## 📞 Contact & Support
 
 ### Project Maintainer
-- **GitHub**: [@yourusername](https://github.com/maruf037)
-- **LinkedIn**: [Your Name](https://linkedin.com/in/maruf037)
-- **Email**: your.email@example.com
+- **GitHub**: [@maruf037](https://github.com/maruf037)
+- **LinkedIn**: [MD MARUF HOSSAIN](https://linkedin.com/in/maruf037)
+- **Email**: sany.maruf@gmail.com
 
 ### Getting Help
 - 🐛 **Bug Reports**: [Open an issue](https://github.com/maruf037/us-generator-fleet-analysis/issues)
