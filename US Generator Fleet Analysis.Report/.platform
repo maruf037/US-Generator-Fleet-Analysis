@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "US Generator Fleet Analysis"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "fcbed564-3a50-474b-a290-6dea6c290c9c"
+  }
+}
