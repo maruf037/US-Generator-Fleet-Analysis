@@ -10,8 +10,8 @@
       "nodes": [
         {
           "location": {
-            "x": 0,
-            "y": 0
+            "x": 802,
+            "y": 25
           },
           "nodeIndex": "out_eia__monthly_generators",
           "nodeLineageTag": "0385beba-1614-4639-bc81-ee36fbd971f5",
@@ -23,13 +23,52 @@
         },
         {
           "location": {
-            "x": 284,
-            "y": 0
+            "x": 1086,
+            "y": 25
           },
           "nodeIndex": "DimDate",
           "nodeLineageTag": "a54d221b-0d34-4ac2-ac8b-94bcc1ebf90c",
           "size": {
             "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 334,
+            "y": -25
+          },
+          "nodeIndex": "DimGenerator",
+          "nodeLineageTag": "6b8f15c4-9646-4fb6-94e5-e7e6a4d6997d",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": -25
+          },
+          "nodeIndex": "DimPlant",
+          "nodeLineageTag": "96baf361-33c3-427e-9218-27b6a41357b0",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 99
+          },
+          "nodeIndex": "DimUtility",
+          "nodeLineageTag": "2131c3b3-538e-4b9a-8706-6f7d65e9054d",
+          "size": {
+            "height": 152,
             "width": 234
           },
           "zIndex": 0

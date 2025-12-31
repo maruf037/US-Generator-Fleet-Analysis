@@ -58,3 +58,26 @@ relationship 8a4600d9-3966-41e0-9100-89267117d4d4
 	fromColumn: DimDate.Date
 	toColumn: LocalDateTable_1d01f919-9d2e-442a-8f0c-021ced574db4.Date
 
+relationship 6293bbcd-2cb0-44bb-89c4-09facb089a80
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimGenerator.generator_operating_date
+	toColumn: LocalDateTable_be514196-bc0e-44dd-a044-1ea3af0f72f2.Date
+
+relationship 009b8a0d-a04a-4b31-8e01-63fe5d2aa567
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimGenerator.generator_retirement_date
+	toColumn: LocalDateTable_5498398a-8a22-4019-abea-7615c185af16.Date
+
+relationship 03268f42-8b0b-4e07-8fb5-43e7e21d8464
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimGenerator.planned_generator_retirement_date
+	toColumn: LocalDateTable_51fc3c93-d1e6-41e2-86ed-da6bc0a84130.Date
+
+relationship AutoDetected_c69f5c8b-da47-4385-ad12-3e6f0fe40d58
+	fromColumn: out_eia__monthly_generators.plant_id_eia
+	toColumn: DimPlant.plant_id_eia
+
+relationship AutoDetected_0f171acf-0a81-42c9-9b51-262a7d7414ab
+	fromColumn: DimGenerator.plant_id_eia
+	toColumn: DimPlant.plant_id_eia
+
