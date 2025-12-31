@@ -1,3 +1,37 @@
+# ============================================
+# Power BI Project - Data Cache
+# ============================================
+
+# Option 1: Exact path (if folder name has spaces, it still works)
 US Generator Fleet Analysis.SemanticModel/.pbi/cache/
 US Generator Fleet Analysis.SemanticModel/.pbi/*.abf
-US Generator Fleet Analysis.SemanticModel/cache/
+
+# Option 2: Wildcard pattern (matches any SemanticModel folder)
+*.SemanticModel/.pbi/cache/
+*.SemanticModel/.pbi/*.abf
+
+# Option 3: Match anywhere in repo (most flexible)
+**/.pbi/cache/
+**/.pbi/*.abf
+
+# ============================================
+# Data Files
+# ============================================
+
+# Assets folder
+Assets/*.csv
+Assets/*.xlsx
+
+# Or ignore ALL CSV files anywhere
+*.csv
+*.xlsx
+
+# But keep sample files
+!Assets/sample_*.csv
+
+# ============================================
+# Power BI Files
+# ============================================
+
+*.pbix
+!*Template.pbit
