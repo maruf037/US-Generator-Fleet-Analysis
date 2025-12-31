@@ -1,58 +1,3 @@
-relationship 8bb3464d-0409-4c57-8a2b-87db55910428
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.report_date
-	toColumn: LocalDateTable_6365824a-8389-4f01-89f9-d656724608cc.Date
-
-relationship e3002a12-3104-488c-a65c-085904757bf6
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.generator_operating_date
-	toColumn: LocalDateTable_e7c9f8a3-9e00-40e3-9150-51200da81abf.Date
-
-relationship 4f67b0e2-7094-466d-8572-4ea903253126
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.generator_retirement_date
-	toColumn: LocalDateTable_af3021da-6942-4d1f-a1ed-76f06d2a686b.Date
-
-relationship 0e4bb30d-8248-4902-a601-eb4ad7e6c50b
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.planned_generator_retirement_date
-	toColumn: LocalDateTable_91105d21-16d9-4742-a04d-09d11dbddf09.Date
-
-relationship 72349417-6483-4b92-81a7-f06933b4106d
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.current_planned_generator_operating_date
-	toColumn: LocalDateTable_1f5b6e37-5165-41ab-be1b-f3b5c27ac02d.Date
-
-relationship aede44c2-24fb-40fc-a78d-cd932ee5b318
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.original_planned_generator_operating_date
-	toColumn: LocalDateTable_10201b2c-fdb7-4ae9-b9bf-41114a389662.Date
-
-relationship 9a53c018-1d16-40af-a1e4-7cee42958cff
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.other_modifications_date
-	toColumn: LocalDateTable_5d59588f-f8f4-4f53-9e13-16e601ad5a83.Date
-
-relationship 6b425b16-d5b9-4e69-b72d-09489faa82f2
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.planned_derate_date
-	toColumn: LocalDateTable_7601235b-ce84-4471-a698-6fb09f34d3ab.Date
-
-relationship 588f697e-4d63-4b1b-a5c3-552d4ee50fcf
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.planned_repower_date
-	toColumn: LocalDateTable_8d1bf890-1830-475e-afec-146b8e266c9d.Date
-
-relationship 6c93dc6a-99d2-4413-86de-cffed1775be8
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.planned_uprate_date
-	toColumn: LocalDateTable_2ae6322d-9f7e-4c5a-89db-d90da080cb06.Date
-
-relationship ae2a4cdf-2a39-4f9e-b60c-58264fa084d9
-	joinOnDateBehavior: datePartOnly
-	fromColumn: out_eia__monthly_generators.uprate_derate_completed_date
-	toColumn: LocalDateTable_97730416-de09-4dd9-9157-70f3296d5a2d.Date
-
 relationship 8a4600d9-3966-41e0-9100-89267117d4d4
 	joinOnDateBehavior: datePartOnly
 	fromColumn: DimDate.Date
@@ -73,11 +18,20 @@ relationship 03268f42-8b0b-4e07-8fb5-43e7e21d8464
 	fromColumn: DimGenerator.planned_generator_retirement_date
 	toColumn: LocalDateTable_51fc3c93-d1e6-41e2-86ed-da6bc0a84130.Date
 
-relationship AutoDetected_c69f5c8b-da47-4385-ad12-3e6f0fe40d58
-	fromColumn: out_eia__monthly_generators.plant_id_eia
-	toColumn: DimPlant.plant_id_eia
-
 relationship AutoDetected_0f171acf-0a81-42c9-9b51-262a7d7414ab
 	fromColumn: DimGenerator.plant_id_eia
 	toColumn: DimPlant.plant_id_eia
+
+relationship 0ccb1d21-0985-4894-9206-f80e235ca28d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactGeneratorMonthly.report_date
+	toColumn: LocalDateTable_db45b955-062f-47a1-a9fc-0e7206f4fe89.Date
+
+relationship AutoDetected_214f383e-ff8f-4b4d-ab1c-6f34d0fbaa8f
+	fromColumn: FactGeneratorMonthly.plant_id_eia
+	toColumn: DimPlant.plant_id_eia
+
+relationship AutoDetected_9152e04b-0eb3-4ec9-bde0-94da1cc3fbbe
+	fromColumn: FactGeneratorMonthly.balancing_authority_code_eia
+	toColumn: DimBalancingAuthority.balancing_authority_code_eia
 

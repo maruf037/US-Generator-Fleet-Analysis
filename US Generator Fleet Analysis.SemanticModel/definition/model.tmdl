@@ -8,23 +8,11 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["out_eia__monthly_generators","DimDate","DimPlant","DimUtility","DimGenerator"]
+annotation PBI_QueryOrder = ["out_eia__monthly_generators","FactGeneratorMonthly","DimDate","DimPlant","DimUtility","DimGenerator","DimTechnology","DimBalancingAuthority"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
-ref table out_eia__monthly_generators
 ref table DateTableTemplate_f56e2290-ce8c-408d-ae94-67e6f02edb91
-ref table LocalDateTable_6365824a-8389-4f01-89f9-d656724608cc
-ref table LocalDateTable_e7c9f8a3-9e00-40e3-9150-51200da81abf
-ref table LocalDateTable_af3021da-6942-4d1f-a1ed-76f06d2a686b
-ref table LocalDateTable_91105d21-16d9-4742-a04d-09d11dbddf09
-ref table LocalDateTable_1f5b6e37-5165-41ab-be1b-f3b5c27ac02d
-ref table LocalDateTable_10201b2c-fdb7-4ae9-b9bf-41114a389662
-ref table LocalDateTable_5d59588f-f8f4-4f53-9e13-16e601ad5a83
-ref table LocalDateTable_7601235b-ce84-4471-a698-6fb09f34d3ab
-ref table LocalDateTable_8d1bf890-1830-475e-afec-146b8e266c9d
-ref table LocalDateTable_2ae6322d-9f7e-4c5a-89db-d90da080cb06
-ref table LocalDateTable_97730416-de09-4dd9-9157-70f3296d5a2d
 ref table DimDate
 ref table LocalDateTable_1d01f919-9d2e-442a-8f0c-021ced574db4
 ref table DimPlant
@@ -33,6 +21,10 @@ ref table DimGenerator
 ref table LocalDateTable_be514196-bc0e-44dd-a044-1ea3af0f72f2
 ref table LocalDateTable_5498398a-8a22-4019-abea-7615c185af16
 ref table LocalDateTable_51fc3c93-d1e6-41e2-86ed-da6bc0a84130
+ref table FactGeneratorMonthly
+ref table LocalDateTable_db45b955-062f-47a1-a9fc-0e7206f4fe89
+ref table DimTechnology
+ref table DimBalancingAuthority
 
 ref cultureInfo en-US
 

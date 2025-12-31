@@ -1,0 +1,96 @@
+table DimBalancingAuthority
+	lineageTag: 60296654-fbaa-49e6-8afb-60a8dfe84dd8
+
+	column balancing_authority_code_eia
+		dataType: string
+		lineageTag: bc877555-4b3c-4abf-aac4-89fc8ab3539b
+		summarizeBy: none
+		sourceColumn: balancing_authority_code_eia
+
+		annotation SummarizationSetBy = Automatic
+
+	column balancing_authority_name_eia
+		dataType: string
+		lineageTag: 93c082a4-de3e-4ea9-8bde-2adf9ea6eb7d
+		summarizeBy: none
+		sourceColumn: balancing_authority_name_eia
+
+		annotation SummarizationSetBy = Automatic
+
+	column ba_region
+		dataType: string
+		lineageTag: e94017ab-f70d-4678-8a8c-fd212a36b125
+		summarizeBy: none
+		sourceColumn: ba_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_rto_iso
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 548a2091-c648-4766-91b1-0177663dd2f4
+		summarizeBy: none
+		sourceColumn: is_rto_iso
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimBalancingAuthority = m
+		mode: import
+		source = ```
+				let
+				    Source = out_eia__monthly_generators,
+				
+				    // Select only balancing authority columns
+				    SelectBAColumns = Table.SelectColumns(Source, {
+				        "balancing_authority_code_eia",
+				        "balancing_authority_name_eia"
+				    }),
+				    
+				    // Remove rows where BA code is null (some generators may not report to a BA)
+				    RemoveNulls = Table.SelectRows(
+				        SelectBAColumns, 
+				        each [balancing_authority_code_eia] <> null and [balancing_authority_code_eia] <> ""
+				    ),
+				    
+				    // Remove duplicate balancing authorities
+				    RemoveDuplicates = Table.Distinct(RemoveNulls, {"balancing_authority_code_eia"}),
+				    
+				    // Add BA region categorization (optional but useful for analysis)
+				    AddRegion = Table.AddColumn(
+				        RemoveDuplicates, 
+				        "ba_region", 
+				        each if Text.Contains([balancing_authority_code_eia], "MISO") then "MISO"
+				             else if Text.Contains([balancing_authority_code_eia], "PJM") then "PJM"
+				             else if Text.Contains([balancing_authority_code_eia], "CAISO") or [balancing_authority_code_eia] = "CISO" then "CAISO"
+				             else if Text.Contains([balancing_authority_code_eia], "ERCO") or [balancing_authority_code_eia] = "ERCOT" then "ERCOT"
+				             else if Text.Contains([balancing_authority_code_eia], "NYIS") then "NYISO"
+				             else if Text.Contains([balancing_authority_code_eia], "ISNE") then "ISO-NE"
+				             else if Text.Contains([balancing_authority_code_eia], "SPP") then "SPP"
+				             else if Text.Contains([balancing_authority_code_eia], "SWPP") then "SPP"
+				             else if List.Contains({"PACE", "PACW", "NWMT", "WAUW", "BPAT", "IPCO"}, [balancing_authority_code_eia]) then "Western"
+				             else if List.Contains({"SOCO", "TVA", "DUK", "SCEG", "FPC", "FPL", "JEA"}, [balancing_authority_code_eia]) then "Southeast"
+				             else "Other",
+				        type text
+				    ),
+				    
+				    // Add RTO/ISO flag (true if part of organized market)
+				    AddRTOFlag = Table.AddColumn(
+				        AddRegion,
+				        "is_rto_iso",
+				        each List.Contains(
+				            {"MISO", "PJM", "CAISO", "CISO", "ERCOT", "ERCO", "NYISO", "NYIS", "ISONE", "ISNE", "SPP", "SWPP"},
+				            [balancing_authority_code_eia]
+				        ),
+				        type logical
+				    ),
+				    
+				    // Sort alphabetically by BA name for easier reference
+				    SortByName = Table.Sort(AddRTOFlag, {{"balancing_authority_name_eia", Order.Ascending}})
+				in
+				    SortByName
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
