@@ -1,2 +1,3 @@
-**/.pbi/localSettings.json
-**/.pbi/cache.abf
+*.SemanticModel/.pbi/cache/
+*.SemanticModel/.pbi/*.abf
+*.SemanticModel/cache/
