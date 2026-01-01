@@ -1,37 +1,34 @@
 # ============================================
-# Power BI Project - Data Cache
+# Power BI Project - Data Cache (SPECIFIC)
 # ============================================
 
-# Option 1: Exact path (if folder name has spaces, it still works)
-US Generator Fleet Analysis.SemanticModel/.pbi/cache/
-US Generator Fleet Analysis.SemanticModel/.pbi/*.abf
-
-# Option 2: Wildcard pattern (matches any SemanticModel folder)
-*.SemanticModel/.pbi/cache/
-*.SemanticModel/.pbi/*.abf
-
-# Option 3: Match anywhere in repo (most flexible)
+# Ignore ONLY the cache subfolder and .abf files
 **/.pbi/cache/
+**/.pbi/cache/**
 **/.pbi/*.abf
+*.abf
+
+# Keep settings files (they're small and useful)
+# These lines ensure settings are NOT ignored:
+!**/.pbi/localSettings.json
+!**/.pbi/editorSettings.json
+!**/.pbi/metadata.json
 
 # ============================================
 # Data Files
 # ============================================
-
-# Assets folder
 Assets/*.csv
 Assets/*.xlsx
-
-# Or ignore ALL CSV files anywhere
 *.csv
 *.xlsx
 
-# But keep sample files
-!Assets/sample_*.csv
+# Keep sample data
+!*sample*.csv
 
 # ============================================
 # Power BI Files
 # ============================================
-
 *.pbix
+
+# Keep templates
 !*Template.pbit
