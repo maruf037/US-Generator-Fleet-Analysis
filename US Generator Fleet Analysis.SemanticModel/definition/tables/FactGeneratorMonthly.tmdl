@@ -235,6 +235,12 @@ table FactGeneratorMonthly
 
 		annotation SummarizationSetBy = Automatic
 
+	column GeneratorKey = FactGeneratorMonthly[plant_id_eia] & "-" & FactGeneratorMonthly[generator_id]
+		lineageTag: 9abf8ffc-e3b8-442d-9b69-bf112f4cc5df
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition FactGeneratorMonthly = m
 		mode: import
 		source = ```

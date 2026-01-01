@@ -2,10 +2,9 @@ table DimGenerator
 	lineageTag: 6b8f15c4-9646-4fb6-94e5-e7e6a4d6997d
 
 	column plant_id_eia
-		dataType: int64
-		formatString: 0
+		dataType: string
 		lineageTag: 3319efeb-f85d-4286-861a-124ad10ac5c4
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: plant_id_eia
 
 		annotation SummarizationSetBy = Automatic
@@ -59,174 +58,13 @@ table DimGenerator
 
 		annotation SummarizationSetBy = Automatic
 
-	column unit_id_pudl
-		dataType: int64
-		formatString: 0
-		lineageTag: ef3e6dab-6504-4b2f-bc4b-5f07bc56bca0
-		summarizeBy: sum
-		sourceColumn: unit_id_pudl
-
-		annotation SummarizationSetBy = Automatic
-
-	column energy_source_code_1
+	column GeneratorKey
 		dataType: string
-		lineageTag: 3ae3bbc5-63c2-4121-933c-1a96d941ab90
+		lineageTag: a05258c0-d2d0-450f-abd6-5d1e2d6e6547
 		summarizeBy: none
-		sourceColumn: energy_source_code_1
+		sourceColumn: GeneratorKey
 
 		annotation SummarizationSetBy = Automatic
-
-	column energy_source_code_2
-		dataType: string
-		lineageTag: d8a9749b-de7d-4c3f-bec2-750a3ca024d1
-		summarizeBy: none
-		sourceColumn: energy_source_code_2
-
-		annotation SummarizationSetBy = Automatic
-
-	column energy_source_code_3
-		dataType: string
-		lineageTag: fdb9137c-0b89-459c-807c-bb9752749cea
-		summarizeBy: none
-		sourceColumn: energy_source_code_3
-
-		annotation SummarizationSetBy = Automatic
-
-	column operational_status
-		dataType: string
-		lineageTag: 13da583d-0269-4e13-91c6-4b52b21ad984
-		summarizeBy: none
-		sourceColumn: operational_status
-
-		annotation SummarizationSetBy = Automatic
-
-	column operational_status_code
-		dataType: string
-		lineageTag: 0484581d-2d77-4c4a-bb76-904d1d841cdb
-		summarizeBy: none
-		sourceColumn: operational_status_code
-
-		annotation SummarizationSetBy = Automatic
-
-	column generator_operating_date
-		dataType: dateTime
-		formatString: Long Date
-		lineageTag: eca81cc7-0f13-4f32-b48e-38f7a71bd345
-		summarizeBy: none
-		sourceColumn: generator_operating_date
-
-		variation Variation
-			isDefault
-			relationship: 5e5015fa-4fe6-419c-87de-fc635c51287b
-			defaultHierarchy: LocalDateTable_fffde1b6-7120-4a6d-ba9c-b44e8a4f29ce.'Date Hierarchy'
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-	column generator_retirement_date
-		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 8aaa3897-1545-46ad-853c-f02ddc9d6f7b
-		summarizeBy: none
-		sourceColumn: generator_retirement_date
-
-		variation Variation
-			isDefault
-			relationship: 357f7738-aeef-4139-9895-9a770798f422
-			defaultHierarchy: LocalDateTable_ce12eee9-13ce-4773-a189-a1c2cb40284d.'Date Hierarchy'
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-	column planned_generator_retirement_date
-		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 5a03c782-94c1-4b49-95a7-89aa67743234
-		summarizeBy: none
-		sourceColumn: planned_generator_retirement_date
-
-		variation Variation
-			isDefault
-			relationship: 70590c61-176e-490f-bf2f-dbe76ca900ce
-			defaultHierarchy: LocalDateTable_01164237-18ff-42d3-8f69-37a3a72a1420.'Date Hierarchy'
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-	column ownership_code
-		dataType: string
-		lineageTag: 09eeccfc-b13f-4df3-85d4-cbc57e7ba3d9
-		summarizeBy: none
-		sourceColumn: ownership_code
-
-		annotation SummarizationSetBy = Automatic
-
-	column can_cofire_fuels
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 03b5bc6f-9198-4f59-adbd-db016569ed29
-		summarizeBy: none
-		sourceColumn: can_cofire_fuels
-
-		annotation SummarizationSetBy = Automatic
-
-	column can_burn_multiple_fuels
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 6764804a-1eb8-4672-a5fe-2bc87d36a4d1
-		summarizeBy: none
-		sourceColumn: can_burn_multiple_fuels
-
-		annotation SummarizationSetBy = Automatic
-
-	column can_switch_when_operating
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: f62e0b08-3695-4fab-80a7-ba8b603a41f2
-		summarizeBy: none
-		sourceColumn: can_switch_when_operating
-
-		annotation SummarizationSetBy = Automatic
-
-	column associated_combined_heat_power
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 5e6197e6-9fcd-4501-946c-1765b40dab75
-		summarizeBy: none
-		sourceColumn: associated_combined_heat_power
-
-		annotation SummarizationSetBy = Automatic
-
-	column carbon_capture
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: ae9c41bf-6dda-4cb7-b64c-6cfff63a098a
-		summarizeBy: none
-		sourceColumn: carbon_capture
-
-		annotation SummarizationSetBy = Automatic
-
-	column distributed_generation
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: cecdf9a5-99ef-4a71-85b8-e5b89884c1a4
-		summarizeBy: none
-		sourceColumn: distributed_generation
-
-		annotation SummarizationSetBy = Automatic
-
-	column energy_storage_capacity_mwh
-		dataType: double
-		lineageTag: 1b902848-3f50-4264-8a6e-a0a28ed4322d
-		summarizeBy: sum
-		sourceColumn: energy_storage_capacity_mwh
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition DimGenerator = m
 		mode: import
@@ -234,61 +72,59 @@ table DimGenerator
 				let
 				    Source = out_eia__monthly_generators,
 				
-				    // Select generator attributes
-				    SelectGeneratorColumns = Table.SelectColumns(Source, {
+				    // Select only needed columns
+				    SelectColumns = Table.SelectColumns(Source, {
 				        "plant_id_eia",
 				        "generator_id",
-				        "unit_id_pudl",
-				        "technology_description",
-				        "energy_source_code_1",
-				        "energy_source_code_2",
-				        "energy_source_code_3",
-				        "prime_mover_code",
 				        "fuel_type_code_pudl",
-				        "operational_status",
-				        "operational_status_code",
-				        "generator_operating_date",
-				        "generator_retirement_date",
-				        "planned_generator_retirement_date",
-				        "ownership_code",
-				        "can_cofire_fuels",
-				        "can_burn_multiple_fuels",
-				        "can_switch_when_operating",
-				        "associated_combined_heat_power",
-				        "carbon_capture",
-				        "distributed_generation",
-				        "energy_storage_capacity_mwh"
+				        "technology_description",
+				        "prime_mover_code"
 				    }),
 				    
-				    // CRITICAL: Remove any rows with null keys (causes duplicate issues)
-				    RemoveNullKeys = Table.SelectRows(
-				        SelectGeneratorColumns,
-				        each [plant_id_eia] <> null and [generator_id] <> null
+				    // Remove nulls aggressively
+				    RemoveNulls = Table.SelectRows(
+				        SelectColumns,
+				        each [plant_id_eia] <> null 
+				        and [generator_id] <> null
+				        and [plant_id_eia] <> ""
+				        and [generator_id] <> ""
 				    ),
 				    
-				    // Sort by most recent operating date to get latest record first
-				    SortByDate = Table.Sort(
-				        RemoveNullKeys,
+				    // Convert and clean
+				    CleanData = Table.TransformColumns(
+				        RemoveNulls,
 				        {
-				            {"plant_id_eia", Order.Ascending},
-				            {"generator_id", Order.Ascending},
-				            {"generator_operating_date", Order.Descending}
+				            {"plant_id_eia", each Text.Trim(Text.From(_)), type text},
+				            {"generator_id", each Text.Trim(_), type text}
 				        }
 				    ),
 				    
-				    // Remove duplicates - keeps FIRST occurrence (most recent due to sort)
-				    RemoveDuplicates = Table.Distinct(
-				        SortByDate,
-				        {"plant_id_eia", "generator_id"}
+				    // Add index FIRST (for tie-breaking)
+				    AddIndex = Table.AddIndexColumn(CleanData, "RowIndex", 1, 1),
+				    
+				    // Sort by index to ensure consistent ordering
+				    SortByIndex = Table.Sort(AddIndex, {{"RowIndex", Order.Ascending}}),
+				    
+				    // Create GeneratorKey
+				    AddGeneratorKey = Table.AddColumn(
+				        SortByIndex,
+				        "GeneratorKey",
+				        each [plant_id_eia] & "-" & [generator_id],
+				        type text
 				    ),
 				    
-				    // VERIFICATION: Add row count to check
-				    // (Remove this after verifying - just for debugging)
-				    AddRowNumber = Table.AddIndexColumn(RemoveDuplicates, "RowNum", 1, 1),
+				    // CRITICAL: Use Table.Distinct on GeneratorKey (keeps FIRST occurrence)
+				    RemoveDuplicateKeys = Table.Distinct(
+				        AddGeneratorKey,
+				        {"GeneratorKey"}
+				    ),
 				    
-				    // Add technology categorization
-				    AddTechnologyCategory = Table.AddColumn(
-				        AddRowNumber,
+				    // Remove the temporary RowIndex column
+				    RemoveIndex = Table.RemoveColumns(RemoveDuplicateKeys, {"RowIndex"}),
+				    
+				    // Add technology category
+				    AddTechCategory = Table.AddColumn(
+				        RemoveIndex,
 				        "technology_category",
 				        each if [fuel_type_code_pudl] = "solar" then "Solar"
 				             else if [fuel_type_code_pudl] = "wind" then "Wind"
@@ -297,23 +133,18 @@ table DimGenerator
 				             else if [fuel_type_code_pudl] = "coal" then "Coal"
 				             else if [fuel_type_code_pudl] = "nuclear" then "Nuclear"
 				             else if [fuel_type_code_pudl] = "oil" then "Petroleum"
-				             else if [fuel_type_code_pudl] = "other" then "Other/Storage"
-				             else "Unknown",
+				             else "Other",
 				        type text
 				    ),
 				    
-				    // Add renewable flag
-				    AddRenewableFlag = Table.AddColumn(
-				        AddTechnologyCategory,
+				    AddRenewable = Table.AddColumn(
+				        AddTechCategory,
 				        "is_renewable",
 				        each List.Contains({"Solar", "Wind", "Hydro"}, [technology_category]),
 				        type logical
-				    ),
-				    
-				    // Remove the temporary RowNum column
-				    RemoveRowNum = Table.RemoveColumns(AddRenewableFlag, {"RowNum"})
+				    )
 				in
-				    RemoveRowNum
+				    AddRenewable
 				```
 
 	annotation PBI_NavigationStepName = Navigation

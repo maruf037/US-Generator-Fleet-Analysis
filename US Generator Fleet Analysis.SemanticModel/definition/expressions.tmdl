@@ -1,6 +1,6 @@
 expression out_eia__monthly_generators = ```
 		let
-		    Source = Parquet.Document(File.Contents("D:\Power BI Projects\9. US Generator Fleet Analysis\US-Generator-Fleet-Analysis\Assets\out_eia__monthly_generators.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])    
+		    Source = Parquet.Document(File.Contents("F:\Power BI Projects\9. US Generator Fleet Analysis\Assets\out_eia__monthly_generators.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])    
 		in
 		    Source
 		```

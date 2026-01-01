@@ -16,18 +16,3 @@ relationship AutoDetected_9152e04b-0eb3-4ec9-bde0-94da1cc3fbbe
 	fromColumn: FactGeneratorMonthly.balancing_authority_code_eia
 	toColumn: DimBalancingAuthority.balancing_authority_code_eia
 
-relationship 5e5015fa-4fe6-419c-87de-fc635c51287b
-	joinOnDateBehavior: datePartOnly
-	fromColumn: DimGenerator.generator_operating_date
-	toColumn: LocalDateTable_fffde1b6-7120-4a6d-ba9c-b44e8a4f29ce.Date
-
-relationship 357f7738-aeef-4139-9895-9a770798f422
-	joinOnDateBehavior: datePartOnly
-	fromColumn: DimGenerator.generator_retirement_date
-	toColumn: LocalDateTable_ce12eee9-13ce-4773-a189-a1c2cb40284d.Date
-
-relationship 70590c61-176e-490f-bf2f-dbe76ca900ce
-	joinOnDateBehavior: datePartOnly
-	fromColumn: DimGenerator.planned_generator_retirement_date
-	toColumn: LocalDateTable_01164237-18ff-42d3-8f69-37a3a72a1420.Date
-
