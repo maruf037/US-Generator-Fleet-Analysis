@@ -5,7 +5,7 @@ table DimGenerator
 		dataType: int64
 		formatString: 0
 		lineageTag: 3319efeb-f85d-4286-861a-124ad10ac5c4
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: plant_id_eia
 
 		annotation SummarizationSetBy = Automatic
@@ -18,44 +18,11 @@ table DimGenerator
 
 		annotation SummarizationSetBy = Automatic
 
-	column unit_id_pudl
-		dataType: int64
-		formatString: 0
-		lineageTag: 8ff6b5e7-ca1a-4925-9489-8fbed89e78a0
-		summarizeBy: sum
-		sourceColumn: unit_id_pudl
-
-		annotation SummarizationSetBy = Automatic
-
 	column technology_description
 		dataType: string
 		lineageTag: fc518354-5ea9-41ee-8045-8226a61a7dcf
 		summarizeBy: none
 		sourceColumn: technology_description
-
-		annotation SummarizationSetBy = Automatic
-
-	column energy_source_code_1
-		dataType: string
-		lineageTag: cef00888-4665-47c8-9895-f4eb49de4e02
-		summarizeBy: none
-		sourceColumn: energy_source_code_1
-
-		annotation SummarizationSetBy = Automatic
-
-	column energy_source_code_2
-		dataType: string
-		lineageTag: 15cc17cd-ab18-4144-80dc-08eacd30d80b
-		summarizeBy: none
-		sourceColumn: energy_source_code_2
-
-		annotation SummarizationSetBy = Automatic
-
-	column energy_source_code_3
-		dataType: string
-		lineageTag: 74d21278-3f45-42c7-b1b7-2176d78405e1
-		summarizeBy: none
-		sourceColumn: energy_source_code_3
 
 		annotation SummarizationSetBy = Automatic
 
@@ -75,142 +42,6 @@ table DimGenerator
 
 		annotation SummarizationSetBy = Automatic
 
-	column operational_status
-		dataType: string
-		lineageTag: b16db692-0f66-4166-9ca7-0844d7884855
-		summarizeBy: none
-		sourceColumn: operational_status
-
-		annotation SummarizationSetBy = Automatic
-
-	column operational_status_code
-		dataType: string
-		lineageTag: d3117a99-5db2-484b-ac70-60663b5d8af9
-		summarizeBy: none
-		sourceColumn: operational_status_code
-
-		annotation SummarizationSetBy = Automatic
-
-	column generator_operating_date
-		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 60b5c171-ad33-4ee7-a968-ac3dda16afa4
-		summarizeBy: none
-		sourceColumn: generator_operating_date
-
-		variation Variation
-			isDefault
-			relationship: 6293bbcd-2cb0-44bb-89c4-09facb089a80
-			defaultHierarchy: LocalDateTable_be514196-bc0e-44dd-a044-1ea3af0f72f2.'Date Hierarchy'
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-	column generator_retirement_date
-		dataType: dateTime
-		formatString: Long Date
-		lineageTag: ab48fc22-ad80-45f8-a807-5c7782c49970
-		summarizeBy: none
-		sourceColumn: generator_retirement_date
-
-		variation Variation
-			isDefault
-			relationship: 009b8a0d-a04a-4b31-8e01-63fe5d2aa567
-			defaultHierarchy: LocalDateTable_5498398a-8a22-4019-abea-7615c185af16.'Date Hierarchy'
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-	column planned_generator_retirement_date
-		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 433b7a0e-da4b-4d82-a729-708293e4974f
-		summarizeBy: none
-		sourceColumn: planned_generator_retirement_date
-
-		variation Variation
-			isDefault
-			relationship: 03268f42-8b0b-4e07-8fb5-43e7e21d8464
-			defaultHierarchy: LocalDateTable_51fc3c93-d1e6-41e2-86ed-da6bc0a84130.'Date Hierarchy'
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation UnderlyingDateTimeDataType = Date
-
-	column ownership_code
-		dataType: string
-		lineageTag: 3e8265a9-3069-41c8-a924-99c748687ce8
-		summarizeBy: none
-		sourceColumn: ownership_code
-
-		annotation SummarizationSetBy = Automatic
-
-	column can_cofire_fuels
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 7c2d9cef-4c9d-4f27-b662-398280dbec69
-		summarizeBy: none
-		sourceColumn: can_cofire_fuels
-
-		annotation SummarizationSetBy = Automatic
-
-	column can_burn_multiple_fuels
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 01c60fc7-4642-42f9-b33b-6c959e25ccca
-		summarizeBy: none
-		sourceColumn: can_burn_multiple_fuels
-
-		annotation SummarizationSetBy = Automatic
-
-	column can_switch_when_operating
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 66542d79-3862-4466-90fa-a8fc874a770c
-		summarizeBy: none
-		sourceColumn: can_switch_when_operating
-
-		annotation SummarizationSetBy = Automatic
-
-	column associated_combined_heat_power
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 784300f1-9af3-4a33-a40c-bd50010dbcb0
-		summarizeBy: none
-		sourceColumn: associated_combined_heat_power
-
-		annotation SummarizationSetBy = Automatic
-
-	column carbon_capture
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 921a1498-027c-4358-be3a-c6bef8ef9927
-		summarizeBy: none
-		sourceColumn: carbon_capture
-
-		annotation SummarizationSetBy = Automatic
-
-	column distributed_generation
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: b61cc1ca-10fa-468a-92c5-e8f74915dd5a
-		summarizeBy: none
-		sourceColumn: distributed_generation
-
-		annotation SummarizationSetBy = Automatic
-
-	column energy_storage_capacity_mwh
-		dataType: double
-		lineageTag: 174fd1f2-addc-4eca-8242-df12c36cee90
-		summarizeBy: sum
-		sourceColumn: energy_storage_capacity_mwh
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column technology_category
 		dataType: string
 		lineageTag: 34f58d40-328c-4318-85b6-7c957ec52242
@@ -227,6 +58,175 @@ table DimGenerator
 		sourceColumn: is_renewable
 
 		annotation SummarizationSetBy = Automatic
+
+	column unit_id_pudl
+		dataType: int64
+		formatString: 0
+		lineageTag: ef3e6dab-6504-4b2f-bc4b-5f07bc56bca0
+		summarizeBy: sum
+		sourceColumn: unit_id_pudl
+
+		annotation SummarizationSetBy = Automatic
+
+	column energy_source_code_1
+		dataType: string
+		lineageTag: 3ae3bbc5-63c2-4121-933c-1a96d941ab90
+		summarizeBy: none
+		sourceColumn: energy_source_code_1
+
+		annotation SummarizationSetBy = Automatic
+
+	column energy_source_code_2
+		dataType: string
+		lineageTag: d8a9749b-de7d-4c3f-bec2-750a3ca024d1
+		summarizeBy: none
+		sourceColumn: energy_source_code_2
+
+		annotation SummarizationSetBy = Automatic
+
+	column energy_source_code_3
+		dataType: string
+		lineageTag: fdb9137c-0b89-459c-807c-bb9752749cea
+		summarizeBy: none
+		sourceColumn: energy_source_code_3
+
+		annotation SummarizationSetBy = Automatic
+
+	column operational_status
+		dataType: string
+		lineageTag: 13da583d-0269-4e13-91c6-4b52b21ad984
+		summarizeBy: none
+		sourceColumn: operational_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column operational_status_code
+		dataType: string
+		lineageTag: 0484581d-2d77-4c4a-bb76-904d1d841cdb
+		summarizeBy: none
+		sourceColumn: operational_status_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column generator_operating_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: eca81cc7-0f13-4f32-b48e-38f7a71bd345
+		summarizeBy: none
+		sourceColumn: generator_operating_date
+
+		variation Variation
+			isDefault
+			relationship: 5e5015fa-4fe6-419c-87de-fc635c51287b
+			defaultHierarchy: LocalDateTable_fffde1b6-7120-4a6d-ba9c-b44e8a4f29ce.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column generator_retirement_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8aaa3897-1545-46ad-853c-f02ddc9d6f7b
+		summarizeBy: none
+		sourceColumn: generator_retirement_date
+
+		variation Variation
+			isDefault
+			relationship: 357f7738-aeef-4139-9895-9a770798f422
+			defaultHierarchy: LocalDateTable_ce12eee9-13ce-4773-a189-a1c2cb40284d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column planned_generator_retirement_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5a03c782-94c1-4b49-95a7-89aa67743234
+		summarizeBy: none
+		sourceColumn: planned_generator_retirement_date
+
+		variation Variation
+			isDefault
+			relationship: 70590c61-176e-490f-bf2f-dbe76ca900ce
+			defaultHierarchy: LocalDateTable_01164237-18ff-42d3-8f69-37a3a72a1420.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ownership_code
+		dataType: string
+		lineageTag: 09eeccfc-b13f-4df3-85d4-cbc57e7ba3d9
+		summarizeBy: none
+		sourceColumn: ownership_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column can_cofire_fuels
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 03b5bc6f-9198-4f59-adbd-db016569ed29
+		summarizeBy: none
+		sourceColumn: can_cofire_fuels
+
+		annotation SummarizationSetBy = Automatic
+
+	column can_burn_multiple_fuels
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6764804a-1eb8-4672-a5fe-2bc87d36a4d1
+		summarizeBy: none
+		sourceColumn: can_burn_multiple_fuels
+
+		annotation SummarizationSetBy = Automatic
+
+	column can_switch_when_operating
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f62e0b08-3695-4fab-80a7-ba8b603a41f2
+		summarizeBy: none
+		sourceColumn: can_switch_when_operating
+
+		annotation SummarizationSetBy = Automatic
+
+	column associated_combined_heat_power
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5e6197e6-9fcd-4501-946c-1765b40dab75
+		summarizeBy: none
+		sourceColumn: associated_combined_heat_power
+
+		annotation SummarizationSetBy = Automatic
+
+	column carbon_capture
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ae9c41bf-6dda-4cb7-b64c-6cfff63a098a
+		summarizeBy: none
+		sourceColumn: carbon_capture
+
+		annotation SummarizationSetBy = Automatic
+
+	column distributed_generation
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: cecdf9a5-99ef-4a71-85b8-e5b89884c1a4
+		summarizeBy: none
+		sourceColumn: distributed_generation
+
+		annotation SummarizationSetBy = Automatic
+
+	column energy_storage_capacity_mwh
+		dataType: double
+		lineageTag: 1b902848-3f50-4264-8a6e-a0a28ed4322d
+		summarizeBy: sum
+		sourceColumn: energy_storage_capacity_mwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition DimGenerator = m
 		mode: import
@@ -260,29 +260,60 @@ table DimGenerator
 				        "energy_storage_capacity_mwh"
 				    }),
 				    
-				    // Remove duplicates (keeps first occurrence which is most recent after sorting)
-				    SortByDate = Table.Sort(SelectGeneratorColumns, {{"generator_operating_date", Order.Descending}}),
-				    RemoveDuplicates = Table.Distinct(SortByDate, {"plant_id_eia", "generator_id"}),
+				    // CRITICAL: Remove any rows with null keys (causes duplicate issues)
+				    RemoveNullKeys = Table.SelectRows(
+				        SelectGeneratorColumns,
+				        each [plant_id_eia] <> null and [generator_id] <> null
+				    ),
+				    
+				    // Sort by most recent operating date to get latest record first
+				    SortByDate = Table.Sort(
+				        RemoveNullKeys,
+				        {
+				            {"plant_id_eia", Order.Ascending},
+				            {"generator_id", Order.Ascending},
+				            {"generator_operating_date", Order.Descending}
+				        }
+				    ),
+				    
+				    // Remove duplicates - keeps FIRST occurrence (most recent due to sort)
+				    RemoveDuplicates = Table.Distinct(
+				        SortByDate,
+				        {"plant_id_eia", "generator_id"}
+				    ),
+				    
+				    // VERIFICATION: Add row count to check
+				    // (Remove this after verifying - just for debugging)
+				    AddRowNumber = Table.AddIndexColumn(RemoveDuplicates, "RowNum", 1, 1),
 				    
 				    // Add technology categorization
-				    AddTechnologyCategory = Table.AddColumn(RemoveDuplicates, "technology_category", each
-				        if [fuel_type_code_pudl] = "solar" then "Solar"
-				        else if [fuel_type_code_pudl] = "wind" then "Wind"
-				        else if [fuel_type_code_pudl] = "hydro" then "Hydro"
-				        else if [fuel_type_code_pudl] = "gas" then "Natural Gas"
-				        else if [fuel_type_code_pudl] = "coal" then "Coal"
-				        else if [fuel_type_code_pudl] = "nuclear" then "Nuclear"
-				        else if [fuel_type_code_pudl] = "oil" then "Petroleum"
-				        else if [fuel_type_code_pudl] = "other" then "Other/Storage"
-				        else "Unknown",
-				    type text),
+				    AddTechnologyCategory = Table.AddColumn(
+				        AddRowNumber,
+				        "technology_category",
+				        each if [fuel_type_code_pudl] = "solar" then "Solar"
+				             else if [fuel_type_code_pudl] = "wind" then "Wind"
+				             else if [fuel_type_code_pudl] = "hydro" then "Hydro"
+				             else if [fuel_type_code_pudl] = "gas" then "Natural Gas"
+				             else if [fuel_type_code_pudl] = "coal" then "Coal"
+				             else if [fuel_type_code_pudl] = "nuclear" then "Nuclear"
+				             else if [fuel_type_code_pudl] = "oil" then "Petroleum"
+				             else if [fuel_type_code_pudl] = "other" then "Other/Storage"
+				             else "Unknown",
+				        type text
+				    ),
 				    
 				    // Add renewable flag
-				    AddRenewableFlag = Table.AddColumn(AddTechnologyCategory, "is_renewable", each
-				        List.Contains({"Solar", "Wind", "Hydro"}, [technology_category]),
-				    type logical)
+				    AddRenewableFlag = Table.AddColumn(
+				        AddTechnologyCategory,
+				        "is_renewable",
+				        each List.Contains({"Solar", "Wind", "Hydro"}, [technology_category]),
+				        type logical
+				    ),
+				    
+				    // Remove the temporary RowNum column
+				    RemoveRowNum = Table.RemoveColumns(AddRenewableFlag, {"RowNum"})
 				in
-				    AddRenewableFlag
+				    RemoveRowNum
 				```
 
 	annotation PBI_NavigationStepName = Navigation

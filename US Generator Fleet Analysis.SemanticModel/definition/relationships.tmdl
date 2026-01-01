@@ -3,25 +3,6 @@ relationship 8a4600d9-3966-41e0-9100-89267117d4d4
 	fromColumn: DimDate.Date
 	toColumn: LocalDateTable_1d01f919-9d2e-442a-8f0c-021ced574db4.Date
 
-relationship 6293bbcd-2cb0-44bb-89c4-09facb089a80
-	joinOnDateBehavior: datePartOnly
-	fromColumn: DimGenerator.generator_operating_date
-	toColumn: LocalDateTable_be514196-bc0e-44dd-a044-1ea3af0f72f2.Date
-
-relationship 009b8a0d-a04a-4b31-8e01-63fe5d2aa567
-	joinOnDateBehavior: datePartOnly
-	fromColumn: DimGenerator.generator_retirement_date
-	toColumn: LocalDateTable_5498398a-8a22-4019-abea-7615c185af16.Date
-
-relationship 03268f42-8b0b-4e07-8fb5-43e7e21d8464
-	joinOnDateBehavior: datePartOnly
-	fromColumn: DimGenerator.planned_generator_retirement_date
-	toColumn: LocalDateTable_51fc3c93-d1e6-41e2-86ed-da6bc0a84130.Date
-
-relationship AutoDetected_0f171acf-0a81-42c9-9b51-262a7d7414ab
-	fromColumn: DimGenerator.plant_id_eia
-	toColumn: DimPlant.plant_id_eia
-
 relationship 0ccb1d21-0985-4894-9206-f80e235ca28d
 	joinOnDateBehavior: datePartOnly
 	fromColumn: FactGeneratorMonthly.report_date
@@ -34,4 +15,19 @@ relationship AutoDetected_214f383e-ff8f-4b4d-ab1c-6f34d0fbaa8f
 relationship AutoDetected_9152e04b-0eb3-4ec9-bde0-94da1cc3fbbe
 	fromColumn: FactGeneratorMonthly.balancing_authority_code_eia
 	toColumn: DimBalancingAuthority.balancing_authority_code_eia
+
+relationship 5e5015fa-4fe6-419c-87de-fc635c51287b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimGenerator.generator_operating_date
+	toColumn: LocalDateTable_fffde1b6-7120-4a6d-ba9c-b44e8a4f29ce.Date
+
+relationship 357f7738-aeef-4139-9895-9a770798f422
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimGenerator.generator_retirement_date
+	toColumn: LocalDateTable_ce12eee9-13ce-4773-a189-a1c2cb40284d.Date
+
+relationship 70590c61-176e-490f-bf2f-dbe76ca900ce
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimGenerator.planned_generator_retirement_date
+	toColumn: LocalDateTable_01164237-18ff-42d3-8f69-37a3a72a1420.Date
 

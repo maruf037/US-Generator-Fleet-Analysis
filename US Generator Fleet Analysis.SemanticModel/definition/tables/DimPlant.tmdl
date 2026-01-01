@@ -14,7 +14,7 @@ table DimPlant
 		dataType: int64
 		formatString: 0
 		lineageTag: b058e7ea-bb06-431f-bedb-81de2a6534cf
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: plant_id_pudl
 
 		annotation SummarizationSetBy = Automatic
@@ -30,7 +30,7 @@ table DimPlant
 	column latitude
 		dataType: double
 		lineageTag: 11247b38-4fcc-4655-b221-fd6f63db2f48
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: latitude
 
 		annotation SummarizationSetBy = Automatic
@@ -40,7 +40,7 @@ table DimPlant
 	column longitude
 		dataType: double
 		lineageTag: 89f58406-621d-491c-a23f-5d7c2d8a62bc
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: longitude
 
 		annotation SummarizationSetBy = Automatic
