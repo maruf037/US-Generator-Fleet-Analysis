@@ -25,11 +25,6 @@ table FactGeneratorMonthly
 		summarizeBy: none
 		sourceColumn: report_date
 
-		variation Variation
-			isDefault
-			relationship: 0ccb1d21-0985-4894-9206-f80e235ca28d
-			defaultHierarchy: LocalDateTable_db45b955-062f-47a1-a9fc-0e7206f4fe89.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
@@ -38,7 +33,7 @@ table FactGeneratorMonthly
 		dataType: int64
 		formatString: 0
 		lineageTag: b514abec-c807-4271-9106-e920e0d048c4
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: utility_id_eia
 
 		annotation SummarizationSetBy = Automatic

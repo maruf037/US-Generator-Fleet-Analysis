@@ -8,7 +8,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["out_eia__monthly_generators","FactGeneratorMonthly","DimDate","DimPlant","DimUtility","DimGenerator","DimTechnology","DimBalancingAuthority"]
+annotation PBI_QueryOrder = ["out_eia__monthly_generators","FactGeneratorMonthly","DimDate","DimPlant","DimUtility","DimBalancingAuthority","DimGenerator"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
@@ -17,11 +17,9 @@ ref table DimDate
 ref table LocalDateTable_1d01f919-9d2e-442a-8f0c-021ced574db4
 ref table DimPlant
 ref table DimUtility
-ref table DimGenerator
 ref table FactGeneratorMonthly
-ref table LocalDateTable_db45b955-062f-47a1-a9fc-0e7206f4fe89
-ref table DimTechnology
 ref table DimBalancingAuthority
+ref table DimGenerator
 
 ref cultureInfo en-US
 

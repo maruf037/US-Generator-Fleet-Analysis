@@ -1,9 +1,9 @@
 table DimGenerator
-	lineageTag: 6b8f15c4-9646-4fb6-94e5-e7e6a4d6997d
+	lineageTag: cf575844-b711-4863-beac-00684490e3d4
 
 	column plant_id_eia
 		dataType: string
-		lineageTag: 3319efeb-f85d-4286-861a-124ad10ac5c4
+		lineageTag: eb319ea3-e523-4f0e-814d-b1e07cc04e88
 		summarizeBy: none
 		sourceColumn: plant_id_eia
 
@@ -11,15 +11,23 @@ table DimGenerator
 
 	column generator_id
 		dataType: string
-		lineageTag: 78a5794c-f73b-4d72-baf1-5a7cc0999eba
+		lineageTag: af992e6c-09e9-4e53-8cf3-5252e8b698e3
 		summarizeBy: none
 		sourceColumn: generator_id
 
 		annotation SummarizationSetBy = Automatic
 
+	column fuel_type_code_pudl
+		dataType: string
+		lineageTag: d46d9783-5f51-496b-894e-d57112f55294
+		summarizeBy: none
+		sourceColumn: fuel_type_code_pudl
+
+		annotation SummarizationSetBy = Automatic
+
 	column technology_description
 		dataType: string
-		lineageTag: fc518354-5ea9-41ee-8045-8226a61a7dcf
+		lineageTag: 754b9c64-ae38-40dd-ad45-c7fdb388749d
 		summarizeBy: none
 		sourceColumn: technology_description
 
@@ -27,23 +35,23 @@ table DimGenerator
 
 	column prime_mover_code
 		dataType: string
-		lineageTag: e1b43901-300a-4b54-adac-fbf6382d2cdd
+		lineageTag: 5ba81e88-9637-470f-a633-233c4f55d6f9
 		summarizeBy: none
 		sourceColumn: prime_mover_code
 
 		annotation SummarizationSetBy = Automatic
 
-	column fuel_type_code_pudl
+	column GeneratorKey
 		dataType: string
-		lineageTag: 020217f2-e478-4000-bb18-e8fa68fcab50
+		lineageTag: 5f1eee99-b2a2-4f9a-bfff-79d955a05892
 		summarizeBy: none
-		sourceColumn: fuel_type_code_pudl
+		sourceColumn: GeneratorKey
 
 		annotation SummarizationSetBy = Automatic
 
 	column technology_category
 		dataType: string
-		lineageTag: 34f58d40-328c-4318-85b6-7c957ec52242
+		lineageTag: c22b8c6e-17ce-4f49-84aa-3c99562a5caa
 		summarizeBy: none
 		sourceColumn: technology_category
 
@@ -52,17 +60,9 @@ table DimGenerator
 	column is_renewable
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: c9a41ce4-ec41-494e-b83b-e5c4bd26681b
+		lineageTag: 644bf5d3-fd03-4305-bc9a-afe28f61243e
 		summarizeBy: none
 		sourceColumn: is_renewable
-
-		annotation SummarizationSetBy = Automatic
-
-	column GeneratorKey
-		dataType: string
-		lineageTag: a05258c0-d2d0-450f-abd6-5d1e2d6e6547
-		summarizeBy: none
-		sourceColumn: GeneratorKey
 
 		annotation SummarizationSetBy = Automatic
 
@@ -72,7 +72,7 @@ table DimGenerator
 				let
 				    Source = out_eia__monthly_generators,
 				
-				    // Select only needed columns
+				// Select only needed columns
 				    SelectColumns = Table.SelectColumns(Source, {
 				        "plant_id_eia",
 				        "generator_id",
@@ -142,9 +142,11 @@ table DimGenerator
 				        "is_renewable",
 				        each List.Contains({"Solar", "Wind", "Hydro"}, [technology_category]),
 				        type logical
-				    )
+				    ),
+				    #"Uppercased Text" = Table.TransformColumns(AddRenewable,{{"GeneratorKey", Text.Upper, type text}}),
+				    #"Removed Duplicates" = Table.Distinct(#"Uppercased Text", {"GeneratorKey"})
 				in
-				    AddRenewable
+				    #"Removed Duplicates"
 				```
 
 	annotation PBI_NavigationStepName = Navigation

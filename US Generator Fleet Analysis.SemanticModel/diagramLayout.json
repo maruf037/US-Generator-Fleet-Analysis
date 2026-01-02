@@ -5,7 +5,7 @@
       "ordinal": 0,
       "scrollPosition": {
         "x": 0,
-        "y": 0
+        "y": 24.134799226309614
       },
       "nodes": [
         {
@@ -15,19 +15,6 @@
           },
           "nodeIndex": "DimDate",
           "nodeLineageTag": "a54d221b-0d34-4ac2-ac8b-94bcc1ebf90c",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 1
-        },
-        {
-          "location": {
-            "x": 328,
-            "y": 419
-          },
-          "nodeIndex": "DimGenerator",
-          "nodeLineageTag": "6b8f15c4-9646-4fb6-94e5-e7e6a4d6997d",
           "size": {
             "height": 300,
             "width": 234
@@ -62,8 +49,8 @@
         },
         {
           "location": {
-            "x": 978.9798609620434,
-            "y": 301.18925233292572
+            "x": 1025.4896284562788,
+            "y": 506.0836334561788
           },
           "nodeIndex": "DimBalancingAuthority",
           "nodeLineageTag": "60296654-fbaa-49e6-8afb-60a8dfe84dd8",
@@ -71,20 +58,7 @@
             "height": 176,
             "width": 234
           },
-          "zIndex": 5
-        },
-        {
-          "location": {
-            "x": 989.98436962996266,
-            "y": 567.28021426262717
-          },
-          "nodeIndex": "DimTechnology",
-          "nodeLineageTag": "e284b6f0-694f-40d6-bcc2-0cac9ba9ca54",
-          "size": {
-            "height": 224,
-            "width": 234
-          },
-          "zIndex": 6
+          "zIndex": 7
         },
         {
           "location": {
@@ -97,7 +71,20 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 7
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 102.10220643304228,
+            "y": 394.14132664166993
+          },
+          "nodeIndex": "DimGenerator",
+          "nodeLineageTag": "cf575844-b711-4863-beac-00684490e3d4",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 1
         }
       ],
       "name": "All tables",
