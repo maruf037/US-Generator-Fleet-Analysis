@@ -30,6 +30,7 @@ table DimPlant
 	column latitude
 		dataType: double
 		lineageTag: 11247b38-4fcc-4655-b221-fd6f63db2f48
+		dataCategory: Latitude
 		summarizeBy: none
 		sourceColumn: latitude
 
@@ -40,6 +41,7 @@ table DimPlant
 	column longitude
 		dataType: double
 		lineageTag: 89f58406-621d-491c-a23f-5d7c2d8a62bc
+		dataCategory: Longitude
 		summarizeBy: none
 		sourceColumn: longitude
 
@@ -50,6 +52,7 @@ table DimPlant
 	column city
 		dataType: string
 		lineageTag: 453a3144-0ef9-4f35-bf03-369dff9bbbaa
+		dataCategory: City
 		summarizeBy: none
 		sourceColumn: city
 
@@ -58,6 +61,7 @@ table DimPlant
 	column county
 		dataType: string
 		lineageTag: 6975e4d0-5ba5-4838-9cac-9c2ed5979178
+		dataCategory: County
 		summarizeBy: none
 		sourceColumn: county
 
@@ -66,6 +70,7 @@ table DimPlant
 	column state
 		dataType: string
 		lineageTag: 0014649b-07d1-4737-babb-8a247409bcea
+		dataCategory: StateOrProvince
 		summarizeBy: none
 		sourceColumn: state
 
@@ -74,6 +79,7 @@ table DimPlant
 	column zip_code
 		dataType: string
 		lineageTag: 59bcac9a-d166-44e8-8182-912447cee980
+		dataCategory: PostalCode
 		summarizeBy: none
 		sourceColumn: zip_code
 
@@ -82,6 +88,7 @@ table DimPlant
 	column street_address
 		dataType: string
 		lineageTag: cd298fa3-134d-46f4-b96e-14f921a5836e
+		dataCategory: Address
 		summarizeBy: none
 		sourceColumn: street_address
 
@@ -102,6 +109,29 @@ table DimPlant
 		sourceColumn: region
 
 		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Geographic Hierarchy'
+		lineageTag: 3f0176eb-1679-4d57-98fc-d43e38ef8d69
+
+		level region
+			lineageTag: 27c83570-77bd-4203-95fe-60c8c6c6e5a6
+			column: region
+
+		level state
+			lineageTag: b2dbe1de-50b5-4d38-be1c-0f223d2c0dca
+			column: state
+
+		level county
+			lineageTag: fecc4b79-62eb-4c0b-ba72-5fdee869941c
+			column: county
+
+		level city
+			lineageTag: b5a50adc-6aed-4083-b1cd-15c76f8294cf
+			column: city
+
+		level plant_name_eia
+			lineageTag: c5cbbf94-30bf-4e40-b0d2-fba13324a7b9
+			column: plant_name_eia
 
 	partition DimPlant = m
 		mode: import

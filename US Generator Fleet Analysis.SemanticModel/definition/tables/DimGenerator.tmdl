@@ -66,6 +66,21 @@ table DimGenerator
 
 		annotation SummarizationSetBy = Automatic
 
+	hierarchy 'Technology Hierarchy'
+		lineageTag: fe625c21-b1d3-4302-8e14-5ef95c873b49
+
+		level technology_category
+			lineageTag: 0a6a87b0-8047-4a40-a1b7-fcb73f26693e
+			column: technology_category
+
+		level fuel_type_code_pudl
+			lineageTag: 3b5eb924-8a71-4f7f-815a-c8274bf7faf5
+			column: fuel_type_code_pudl
+
+		level technology_description
+			lineageTag: e206ae4e-7b63-4cfb-af53-7a9ed233cd01
+			column: technology_description
+
 	partition DimGenerator = m
 		mode: import
 		source = ```

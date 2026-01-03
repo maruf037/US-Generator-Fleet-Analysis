@@ -49,6 +49,9 @@ table DimDate
 		lineageTag: 6c86627b-e696-47a7-b481-16be5afeb5f2
 		summarizeBy: none
 		sourceColumn: MonthName
+		sortByColumn: Month
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
@@ -73,6 +76,9 @@ table DimDate
 		lineageTag: 4d87cc4a-dc17-460e-9f93-343839c4289c
 		summarizeBy: none
 		sourceColumn: YearMonthName
+		sortByColumn: MonthShort
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
@@ -81,6 +87,9 @@ table DimDate
 		lineageTag: 7cc9baa3-1060-410a-b014-75d1228ffeec
 		summarizeBy: none
 		sourceColumn: QuarterLabel
+		sortByColumn: Quarter
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
@@ -162,6 +171,21 @@ table DimDate
 		sourceColumn: MonthSort
 
 		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Time Hierarchy'
+		lineageTag: 38c22db1-2ebf-4471-9ab9-62fce4148554
+
+		level Year
+			lineageTag: d823886c-2541-4f78-bc4a-50a8ef65168e
+			column: Year
+
+		level Quarter
+			lineageTag: b4b87a79-907a-4705-ac3e-a08e8155f41b
+			column: Quarter
+
+		level MonthName
+			lineageTag: 3d512517-b501-44da-bbb3-b4ccecddd980
+			column: MonthName
 
 	partition DimDate = m
 		mode: import
