@@ -11,15 +11,15 @@ relationship AutoDetected_9152e04b-0eb3-4ec9-bde0-94da1cc3fbbe
 	fromColumn: FactGeneratorMonthly.balancing_authority_code_eia
 	toColumn: DimBalancingAuthority.balancing_authority_code_eia
 
-relationship 8233aa88-72d6-9a28-9126-245c3bd7a7e1
-	fromColumn: FactGeneratorMonthly.GeneratorKey
-	toColumn: DimGenerator.GeneratorKey
-
 relationship 8ea8834d-28f3-cd30-f40a-37ab0ac19705
 	fromColumn: FactGeneratorMonthly.report_date
 	toColumn: DimDate.Date
 
-relationship 596fc076-4425-94c3-cad3-b99d75bc0449
+relationship 60863bf7-aae2-0142-5e9f-276ae6c37a4f
 	fromColumn: FactGeneratorMonthly.utility_id_eia
 	toColumn: DimUtility.utility_id_eia
+
+relationship 28b78fc4-d242-bf62-4108-79583849d415
+	fromColumn: FactGeneratorMonthly.GeneratorKey
+	toColumn: DimGenerator.GeneratorKey
 

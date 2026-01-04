@@ -2,8 +2,7 @@ table DimUtility
 	lineageTag: 2131c3b3-538e-4b9a-8706-6f7d65e9054d
 
 	column utility_id_eia
-		dataType: int64
-		formatString: 0
+		dataType: string
 		lineageTag: e0e6fee9-6bb0-4832-bf5c-f006a46f04db
 		summarizeBy: none
 		sourceColumn: utility_id_eia
@@ -11,7 +10,7 @@ table DimUtility
 		annotation SummarizationSetBy = Automatic
 
 	column utility_id_pudl
-		dataType: int64
+		dataType: double
 		formatString: 0
 		lineageTag: 91ca2f1f-c5e0-48b4-b296-ed7720d6f086
 		summarizeBy: none
@@ -29,23 +28,36 @@ table DimUtility
 
 	partition DimUtility = m
 		mode: import
-		source = ```
+		source =
 				let
 				    Source = out_eia__monthly_generators,
 				
-				    //Keeping the utility columns
-				    SelectUtilityColumns = Table.SelectColumns(Source, {
+				SelectUtilityColumns = Table.SelectColumns(Source, {
 				        "utility_id_eia",
 				        "utility_id_pudl",
 				        "utility_name_eia"
 				    }),
-				    
-				    //Removing duplicates
-				    RemoveDuplicates = Table.Distinct(SelectUtilityColumns, {"utility_id_eia"}),
-				    #"Removed Blank Rows" = Table.SelectRows(RemoveDuplicates, each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+				
+				    // Normalize types/text first
+				    Clean = Table.TransformColumns(
+				        SelectUtilityColumns,
+				        {
+				            {"utility_id_eia", each Text.Trim(Text.Clean(Text.From(_))), type text},
+				            {"utility_id_pudl", each try Number.From(_) otherwise null, type number},
+				            {"utility_name_eia", each Text.Trim(Text.Clean(Text.From(_))), type text}
+				        }
+				    ),
+				
+				    // Remove null/blank keys (critical for 1-side relationship)
+				    RemoveBlankKeys = Table.SelectRows(
+				        Clean,
+				        each [utility_id_eia] <> null and [utility_id_eia] <> ""
+				    ),
+				
+				    // Now dedupe by the key
+				    RemoveDuplicates = Table.Distinct(RemoveBlankKeys, {"utility_id_eia"})
 				in
-				    #"Removed Blank Rows"
-				```
+				    RemoveDuplicates
 
 	annotation PBI_NavigationStepName = Navigation
 

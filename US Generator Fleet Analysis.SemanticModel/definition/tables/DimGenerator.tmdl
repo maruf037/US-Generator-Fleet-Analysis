@@ -1,9 +1,17 @@
 table DimGenerator
-	lineageTag: cf575844-b711-4863-beac-00684490e3d4
+	lineageTag: c0fca99a-1d5e-4d7a-9a34-0ac2107549bc
+
+	column GeneratorKey
+		dataType: string
+		lineageTag: 40f837c1-74d7-4826-953b-5c520a763ab3
+		summarizeBy: none
+		sourceColumn: GeneratorKey
+
+		annotation SummarizationSetBy = Automatic
 
 	column plant_id_eia
 		dataType: string
-		lineageTag: eb319ea3-e523-4f0e-814d-b1e07cc04e88
+		lineageTag: bb460632-02bf-49ed-80be-130c3a8225f0
 		summarizeBy: none
 		sourceColumn: plant_id_eia
 
@@ -11,7 +19,7 @@ table DimGenerator
 
 	column generator_id
 		dataType: string
-		lineageTag: af992e6c-09e9-4e53-8cf3-5252e8b698e3
+		lineageTag: b9819926-b7b1-4286-8e04-543246eb6c1b
 		summarizeBy: none
 		sourceColumn: generator_id
 
@@ -19,7 +27,7 @@ table DimGenerator
 
 	column fuel_type_code_pudl
 		dataType: string
-		lineageTag: d46d9783-5f51-496b-894e-d57112f55294
+		lineageTag: 6e3c4e6d-3b83-4aa1-8d1b-b5a29d09878a
 		summarizeBy: none
 		sourceColumn: fuel_type_code_pudl
 
@@ -27,7 +35,7 @@ table DimGenerator
 
 	column technology_description
 		dataType: string
-		lineageTag: 754b9c64-ae38-40dd-ad45-c7fdb388749d
+		lineageTag: 64c9ac62-c8a8-4e32-8d6e-fd737cbd49e9
 		summarizeBy: none
 		sourceColumn: technology_description
 
@@ -35,23 +43,15 @@ table DimGenerator
 
 	column prime_mover_code
 		dataType: string
-		lineageTag: 5ba81e88-9637-470f-a633-233c4f55d6f9
+		lineageTag: 85d39596-a5c7-4fe6-85f0-eabb0f86e4ab
 		summarizeBy: none
 		sourceColumn: prime_mover_code
 
 		annotation SummarizationSetBy = Automatic
 
-	column GeneratorKey
-		dataType: string
-		lineageTag: 5f1eee99-b2a2-4f9a-bfff-79d955a05892
-		summarizeBy: none
-		sourceColumn: GeneratorKey
-
-		annotation SummarizationSetBy = Automatic
-
 	column technology_category
 		dataType: string
-		lineageTag: c22b8c6e-17ce-4f49-84aa-3c99562a5caa
+		lineageTag: 674c1c93-d12c-4892-9a8a-2bb07d10d5d5
 		summarizeBy: none
 		sourceColumn: technology_category
 
@@ -60,84 +60,75 @@ table DimGenerator
 	column is_renewable
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 644bf5d3-fd03-4305-bc9a-afe28f61243e
+		lineageTag: 96a8b734-fc1f-4c2d-b3f1-8d085598fc77
 		summarizeBy: none
 		sourceColumn: is_renewable
 
 		annotation SummarizationSetBy = Automatic
 
-	hierarchy 'Technology Hierarchy'
-		lineageTag: fe625c21-b1d3-4302-8e14-5ef95c873b49
-
-		level technology_category
-			lineageTag: 0a6a87b0-8047-4a40-a1b7-fcb73f26693e
-			column: technology_category
-
-		level fuel_type_code_pudl
-			lineageTag: 3b5eb924-8a71-4f7f-815a-c8274bf7faf5
-			column: fuel_type_code_pudl
-
-		level technology_description
-			lineageTag: e206ae4e-7b63-4cfb-af53-7a9ed233cd01
-			column: technology_description
-
 	partition DimGenerator = m
 		mode: import
-		source = ```
+		source =
 				let
 				    Source = out_eia__monthly_generators,
 				
-				// Select only needed columns
-				    SelectColumns = Table.SelectColumns(Source, {
+				SelectColumns = Table.SelectColumns(Source, {
 				        "plant_id_eia",
 				        "generator_id",
 				        "fuel_type_code_pudl",
 				        "technology_description",
 				        "prime_mover_code"
 				    }),
-				    
-				    // Remove nulls aggressively
+				
 				    RemoveNulls = Table.SelectRows(
 				        SelectColumns,
-				        each [plant_id_eia] <> null 
-				        and [generator_id] <> null
-				        and [plant_id_eia] <> ""
-				        and [generator_id] <> ""
+				        each [plant_id_eia] <> null and [generator_id] <> null
+				          and Text.Trim(Text.From([plant_id_eia])) <> ""
+				          and Text.Trim(Text.From([generator_id])) <> ""
 				    ),
-				    
-				    // Convert and clean
-				    CleanData = Table.TransformColumns(
+				
+				    // Clean key parts (stable across refresh/machines)
+				    CleanParts = Table.TransformColumns(
 				        RemoveNulls,
 				        {
-				            {"plant_id_eia", each Text.Trim(Text.From(_)), type text},
-				            {"generator_id", each Text.Trim(_), type text}
+				            {"plant_id_eia", each Text.Upper(Text.Trim(Text.Clean(Text.From(_)))), type text},
+				            {"generator_id", each Text.Upper(Text.Trim(Text.Clean(Text.From(_)))), type text}
 				        }
 				    ),
-				    
-				    // Add index FIRST (for tie-breaking)
-				    AddIndex = Table.AddIndexColumn(CleanData, "RowIndex", 1, 1),
-				    
-				    // Sort by index to ensure consistent ordering
-				    SortByIndex = Table.Sort(AddIndex, {{"RowIndex", Order.Ascending}}),
-				    
-				    // Create GeneratorKey
+				
+				    // If GeneratorKey already exists, remove it (prevents your error)
+				    RemoveExistingKey =
+				        if List.Contains(Table.ColumnNames(CleanParts), "GeneratorKey")
+				        then Table.RemoveColumns(CleanParts, {"GeneratorKey"})
+				        else CleanParts,
+				
+				    AddIndex = Table.AddIndexColumn(RemoveExistingKey, "RowIndex", 1, 1, Int64.Type),
+				
 				    AddGeneratorKey = Table.AddColumn(
-				        SortByIndex,
+				        AddIndex,
 				        "GeneratorKey",
 				        each [plant_id_eia] & "-" & [generator_id],
 				        type text
 				    ),
-				    
-				    // CRITICAL: Use Table.Distinct on GeneratorKey (keeps FIRST occurrence)
-				    RemoveDuplicateKeys = Table.Distinct(
+				
+				    // Deterministic de-dup: sort inside each group and keep 1 row
+				    Grouped = Table.Group(
 				        AddGeneratorKey,
-				        {"GeneratorKey"}
+				        {"GeneratorKey"},
+				        {{"r", each Record.RemoveFields(
+				                Table.First(Table.Sort(_, {{"RowIndex", Order.Ascending}})),
+				                {"GeneratorKey"}
+				            ), type record}}
 				    ),
-				    
-				    // Remove the temporary RowIndex column
-				    RemoveIndex = Table.RemoveColumns(RemoveDuplicateKeys, {"RowIndex"}),
-				    
-				    // Add technology category
+				
+				    Expanded = Table.ExpandRecordColumn(
+				        Grouped,
+				        "r",
+				        List.RemoveItems(Table.ColumnNames(AddGeneratorKey), {"GeneratorKey"})
+				    ),
+				
+				    RemoveIndex = Table.RemoveColumns(Expanded, {"RowIndex"}),
+				
 				    AddTechCategory = Table.AddColumn(
 				        RemoveIndex,
 				        "technology_category",
@@ -151,18 +142,15 @@ table DimGenerator
 				             else "Other",
 				        type text
 				    ),
-				    
+				
 				    AddRenewable = Table.AddColumn(
 				        AddTechCategory,
 				        "is_renewable",
 				        each List.Contains({"Solar", "Wind", "Hydro"}, [technology_category]),
 				        type logical
-				    ),
-				    #"Uppercased Text" = Table.TransformColumns(AddRenewable,{{"GeneratorKey", Text.Upper, type text}}),
-				    #"Removed Duplicates" = Table.Distinct(#"Uppercased Text", {"GeneratorKey"})
+				    )
 				in
-				    #"Removed Duplicates"
-				```
+				    AddRenewable
 
 	annotation PBI_NavigationStepName = Navigation
 
