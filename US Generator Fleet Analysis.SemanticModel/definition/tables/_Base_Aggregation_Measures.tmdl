@@ -1,0 +1,108 @@
+table _Base_Aggregation_Measures
+	lineageTag: 8e4ec727-a112-476e-acdd-ef2895bef536
+
+	measure 'Total Capacity (MW)' =
+			
+			SUM (FactGeneratorMonthly[capacity_mw])
+		lineageTag: 6ac8e38f-98b1-4b59-941d-9e90df0a11c6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Generation (MWh)' = SUM(FactGeneratorMonthly[net_generation_mwh])
+		lineageTag: f5ff94a1-1119-4f5b-bf0a-b6990ab38b49
+
+		formatStringDefinition = "#,##0"
+
+	measure 'Avg Capacity Factor' =
+			AVERAGEX(FILTER(
+			                                    FactGeneratorMonthly,
+			                                    NOT ISBLANK(FactGeneratorMonthly[capacity_factor])
+			                                ),
+			                                FactGeneratorMonthly[capacity_factor]
+			                            )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 9ef53a03-d5cd-4d10-8a8a-29e65188fb51
+
+	measure 'Total Generators' = DISTINCTCOUNT(FactGeneratorMonthly[generator_id])
+		formatString: 0
+		lineageTag: 8d383ec7-fe71-42b8-acf2-6f350a2de0c4
+
+	measure 'Total Fuel Cost ($M)' = DIVIDE(SUM(FactGeneratorMonthly[total_fuel_cost]), 1000000, 0)
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		lineageTag: ab5768b5-b6bf-49bf-b8d6-ab9e7fce9625
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Avg Fuel Cost per MWh' =
+			DIVIDE(
+			                            SUM(FactGeneratorMonthly[total_fuel_cost]),
+			                            SUM(FactGeneratorMonthly[net_generation_mwh]),
+			                            BLANK()
+			                        )
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: ed7a0443-b646-46e7-bdcd-c76bc2e041ff
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Total CO2 Emissions (MT)' = SUM(FactGeneratorMonthly[estimated_co2_tons])
+		lineageTag: 25599c2b-abc7-4ec9-8616-a866d43d9f49
+
+		formatStringDefinition = "#,##0 MT"
+
+	measure 'Emissions Intensity (MT/MWh)' =
+			DIVIDE(
+			                                    [Total CO2 Emissions (MT)],
+			                                    [Total Generation (MWh)],
+			                                    BLANK()
+			                                )
+		lineageTag: 8b07e108-eb5e-4fb6-a0fb-36850dc8f276
+
+		formatStringDefinition = "0.000 MT/MWh"
+
+	measure 'Active Generators' = ```
+			CALCULATE(
+			                        DISTINCTCOUNT(FactGeneratorMonthly[generator_id]), 
+			                        FactGeneratorMonthly[operational_status_code] IN {"OP", "SB", "OA"}
+			                    )
+			```
+		formatString: 0
+		lineageTag: 8f944b27-f712-4ee5-9586-c1e32c901a63
+
+	measure 'Renewable Capacity (MW)' = ```
+			CALCULATE(
+			                                    [Total Capacity (MW)], 
+			                                    DimGenerator[is_renewable] = TRUE()
+			                                )
+			```
+		lineageTag: c5866670-eb99-4c19-8531-d3200f5e2e92
+
+		formatStringDefinition = "#,##0.0 MW"
+
+	measure 'Renewable % of Capacity' = ```
+			DIVIDE(
+			                                [Renewable Capacity (MW)],
+			                                [Total Capacity (MW)],
+			                                0
+			                            )   
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 1f4d0fd5-b686-4a08-a469-a66ca260e00b
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: ce903382-bf7b-4da2-a888-7aae7d66c35e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Base_Aggregation_Measures = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = f5de343e2552472fb994046912d9c716
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+
