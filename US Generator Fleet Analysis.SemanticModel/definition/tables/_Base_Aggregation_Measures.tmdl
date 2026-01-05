@@ -3,12 +3,22 @@ table _Base_Aggregation_Measures
 
 	measure 'Total Capacity (MW)' =
 			
-			SUM (FactGeneratorMonthly[capacity_mw])
+			SUMX(
+			    SUMMARIZE(
+			        FactGeneratorMonthly,
+			        FactGeneratorMonthly[plant_id_eia],
+			        FactGeneratorMonthly[generator_id]
+			    ),
+			    CALCULATE( MAX( FactGeneratorMonthly[capacity_mw] ) )
+			)
 		lineageTag: 6ac8e38f-98b1-4b59-941d-9e90df0a11c6
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Total Generation (MWh)' = SUM(FactGeneratorMonthly[net_generation_mwh])
+	measure 'Total Generation (MWh)' = ```
+			SUM ( FactGeneratorMonthly[net_generation_mwh] )
+			
+			```
 		lineageTag: f5ff94a1-1119-4f5b-bf0a-b6990ab38b49
 
 		formatStringDefinition = "#,##0"
@@ -22,10 +32,6 @@ table _Base_Aggregation_Measures
 			                            )
 		formatString: 0.0%;-0.0%;0.0%
 		lineageTag: 9ef53a03-d5cd-4d10-8a8a-29e65188fb51
-
-	measure 'Total Generators' = DISTINCTCOUNT(FactGeneratorMonthly[generator_id])
-		formatString: 0
-		lineageTag: 8d383ec7-fe71-42b8-acf2-6f350a2de0c4
 
 	measure 'Total Fuel Cost ($M)' = DIVIDE(SUM(FactGeneratorMonthly[total_fuel_cost]), 1000000, 0)
 		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
@@ -87,6 +93,46 @@ table _Base_Aggregation_Measures
 			```
 		formatString: 0.0%;-0.0%;0.0%
 		lineageTag: 1f4d0fd5-b686-4a08-a469-a66ca260e00b
+
+	measure 'Latest Report Date' = CALCULATE(MIN(FactGeneratorMonthly[report_date]), ALL(FactGeneratorMonthly))
+		formatString: General Date
+		lineageTag: 6fd035ea-0b85-4151-a0a5-148596685091
+
+	measure 'Total Capacity (MW) - Latest Month' =
+			
+			VAR d = [Latest Report Date]
+			RETURN
+			CALCULATE (
+			    [Total Capacity (MW)],
+			    FactGeneratorMonthly[report_date] = d
+			)
+		lineageTag: dc54c359-e87f-49e6-b796-423d1aa26796
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Generation (MWh) - Latest Month' =
+			
+			VAR d = [Latest Report Date]
+			RETURN
+			CALCULATE(
+			    [Total Generation (MWh)],
+			    FactGeneratorMonthly[report_date] = d
+			)
+		lineageTag: 0128b366-159d-44ca-8232-53871b2135d1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Generators' =
+			
+			DISTINCTCOUNT ( FactGeneratorMonthly[generator_id] )
+		formatString: 0
+		lineageTag: 952e5ec0-3634-4baf-b5c2-8c5c82b24403
+
+	measure 'Total Plants' =
+			
+			DISTINCTCOUNT ( FactGeneratorMonthly[plant_id_eia] )
+		formatString: 0
+		lineageTag: b8f7f581-f84b-4cad-8c48-5f137e1acaf6
 
 	column Column
 		isHidden

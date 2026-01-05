@@ -269,7 +269,8 @@ table FactGeneratorMonthly
 				        // Keep operational status as it can change monthly
 				        "operational_status_code"
 				    }),
-				    
+				
+				  
 				    // Add calculated measures
 				    AddCapacityUtilization = Table.AddColumn(
 				        SelectFactColumns,
