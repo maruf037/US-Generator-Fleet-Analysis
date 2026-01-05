@@ -1,0 +1,50 @@
+table _Time_Intelligence_Measures
+	lineageTag: fd3478d4-de6c-4fc4-b48e-25c76a30c6ff
+
+	measure 'YTD Generation (MWh)' = ```
+			TOTALYTD(
+			                            [Total Generation (MWh)], 
+			                            DimDate[Date]
+			                        )
+			```
+		lineageTag: 4b5c9cd5-a482-41db-83a7-824ee6751aa5
+
+		formatStringDefinition = "#,##0 MWh"
+
+	measure 'YTD Fuel Cost ($M)' =
+			TOTALYTD(
+			                        [Total Fuel Cost ($M)],
+			                        DimDate[Date]
+			                    )
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		lineageTag: 2f89e419-3df3-4344-bbcd-e3ed7ba695eb
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YTD CO2 Emission (MT)' =
+			TOTALYTD(
+			                            [Total CO2 Emissions (MT)],
+			                            DimDate[Date]
+			                        )
+		lineageTag: 26cbc086-e2a7-473c-b94d-472b54e43aa2
+
+		formatStringDefinition = "#,##0 MT"
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: 56c75425-a98f-4c94-b186-12eb7dd760e4
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Time_Intelligence_Measures = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = a93ab34adac74b9a99f13c2efda0c732
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

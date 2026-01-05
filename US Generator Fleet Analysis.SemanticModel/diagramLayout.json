@@ -4,7 +4,7 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 388.41940961401974,
+        "x": 468.08315269283457,
         "y": 0
       },
       "nodes": [
@@ -92,6 +92,18 @@
             "y": 241.04181672808943
           },
           "nodeIndex": "_Base_Aggregation_Measures",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1389.2852155901942,
+            "y": 241.04181672808943
+          },
+          "nodeIndex": "_Time_Intelligence_Measures",
           "size": {
             "height": 200,
             "width": 234

@@ -21,6 +21,7 @@ ref table FactGeneratorMonthly
 ref table DimBalancingAuthority
 ref table DimGenerator
 ref table _Base_Aggregation_Measures
+ref table _Time_Intelligence_Measures
 
 ref cultureInfo en-US
 
