@@ -7,6 +7,7 @@ table _Time_Intelligence_Measures
 			                            DimDate[Date]
 			                        )
 			```
+		displayFolder: YEAR-TO-DATE (YTD)
 		lineageTag: 4b5c9cd5-a482-41db-83a7-824ee6751aa5
 
 		formatStringDefinition = "#,##0 MWh"
@@ -17,6 +18,7 @@ table _Time_Intelligence_Measures
 			                        DimDate[Date]
 			                    )
 		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		displayFolder: YEAR-TO-DATE (YTD)
 		lineageTag: 2f89e419-3df3-4344-bbcd-e3ed7ba695eb
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
@@ -26,9 +28,66 @@ table _Time_Intelligence_Measures
 			                            [Total CO2 Emissions (MT)],
 			                            DimDate[Date]
 			                        )
+		displayFolder: YEAR-TO-DATE (YTD)
 		lineageTag: 26cbc086-e2a7-473c-b94d-472b54e43aa2
 
 		formatStringDefinition = "#,##0 MT"
+
+	measure 'QTD Generation (MWh)' = ```
+			TOTALQTD(
+			                            [Total Generation (MWh)],
+			                            DimDate[Date]
+			                        )   
+			```
+		lineageTag: ba62cf0c-ae1c-46c7-b7ad-27acab64a965
+
+		formatStringDefinition = "#,##0 MWh"
+
+	measure 'MTD Generation (MWh)' =
+			TOTALMTD(
+			                            [Total Generation (MWh)],
+			                            DimDate[Date]
+			                        )
+		lineageTag: 96c36d19-9147-42d9-82de-88a8c7e04e63
+
+		formatStringDefinition = "#,##0 MWh"
+
+	measure 'PY Generation (MWh)' =
+			CALCULATE(
+			                            [Total Generation (MWh)],
+			                            SAMEPERIODLASTYEAR(DimDate[Date])
+			                        )
+		lineageTag: 8871a3eb-1c69-4f79-a456-89436972f913
+
+		formatStringDefinition = "#,##0 MWh"
+
+	measure 'YoY Growth (MWh)' = [Total Generation (MWh)] - [PY Generation (MWh)]
+		lineageTag: bf534c1c-bd3f-4dd5-bb8a-c942b20e3291
+
+		formatStringDefinition = "#,##0 MWh"
+
+	measure 'YoY Growth %' =
+			DIVIDE(
+			                    [YoY Growth (MWh)],
+			                    [PY Generation (MWh)],
+			                    BLANK()
+			                )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: a21f9971-772b-4627-b87e-f3f907b7b711
+
+	measure 'PY Capacity (MW)' =
+			CALCULATE(
+			                        [Total Capacity (MW)],
+			                        SAMEPERIODLASTYEAR(DimDate[Date])
+			                    )
+		lineageTag: 0a2d0846-35b4-4fff-9d60-bcd3df74be1c
+
+		formatStringDefinition = " #,##0.0 MW"
+
+	measure 'YoY Capacity Change (MW)' = [Total Capacity (MW)] - [PY Capacity (MW)]
+		lineageTag: 39222a85-0ca0-47d7-9d49-7ebc72619fe3
+
+		formatStringDefinition = "+#,##0.0;-#,##0.0;0.0 MW"
 
 	column Column
 		isHidden
