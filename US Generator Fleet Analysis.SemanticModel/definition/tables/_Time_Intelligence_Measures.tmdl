@@ -158,9 +158,20 @@ table _Time_Intelligence_Measures
 			                                [YTD Generation (MWh)],
 			                                SAMEPERIODLASTYEAR(DimDate[Date])
 			                            )
+		displayFolder: SAME PERIOD LAST YEAR (SPLY)
 		lineageTag: 9cc6e5e7-334d-4ad7-a946-b7a79057bb29
 
 		formatStringDefinition = "#,##0 MWh"
+
+	measure 'YoY YTD Growth %' =
+			DIVIDE(
+			                        [YTD Generation (MWh)] - [SPLY YTD Generation (MWh)],
+			                        [SPLY YTD Generation (MWh)],
+			                        BLANK()
+			                    )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: SAME PERIOD LAST YEAR (SPLY)
+		lineageTag: e13c950e-22e1-4f88-95ea-0cec17d014cd
 
 	column Column
 		isHidden

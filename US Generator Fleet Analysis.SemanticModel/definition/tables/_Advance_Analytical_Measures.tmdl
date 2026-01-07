@@ -1,0 +1,274 @@
+table _Advance_Analytical_Measures
+	lineageTag: e7e09629-c4da-4e56-9329-b1ee2199c75d
+
+	measure 'Cummulative Generation (MWh)' = ```
+			CALCULATE(
+			                                    [Total Generation (MWh)],
+			                                    FILTER(
+			                                        ALL(DimDate),
+			                                        DimDate[Date] <= MAX(DimDate[Date]) 
+			                                        && DimDate[Year] = MAX ( DimDate[Year] )
+			                                    )
+			                                )
+			```
+		displayFolder: CUMULATIVE CALCULATIONS
+		lineageTag: 12bb0211-aac3-432e-ba28-ddb5af5a0ce1
+
+		formatStringDefinition = "#,##0.0 MW"
+
+	measure 'Cummulative Renewable Capacity (MW)' =
+			CALCULATE(
+			                                            [Renewable Capacity (MW)],
+			                                            FILTER(
+			                                                ALL(DimDate),
+			                                                DimDate[Date] <= MAX(DimDate[Date])
+			                                            )
+			                                        )
+		displayFolder: CUMULATIVE CALCULATIONS
+		lineageTag: c39c0bfe-12f1-44d2-9dfd-7080f53a27c9
+
+		formatStringDefinition = "#,##0.0 MW"
+
+	measure 'Generator Generation Rank' =
+			RANKX(
+			                                ALL(DimGenerator[generator_id]),
+			                                [Total Generation (MWh)],
+			                                ,
+			                                DESC,
+			                                Dense
+			                            )
+		formatString: 0
+		displayFolder: RANKING
+		lineageTag: a1fd467b-f300-4080-b4b3-47b5efc3cef7
+
+	measure 'State Capacity Rank' =
+			RANKX(
+			                        ALL(DimPlant[state]),
+			                        [Total Capacity (MW)],
+			                        ,
+			                        DESC,
+			                        Dense
+			                    )
+		formatString: 0
+		displayFolder: RANKING
+		lineageTag: 5a502b79-14ab-4ce7-adb5-d098218e2a9f
+
+	measure 'Is Top 10 Generator' =
+			IF(
+			                        [Generator Generation Rank] <= 10,
+			                        "Top 10",
+			                        "Other"
+			                    )
+		displayFolder: RANKING
+		lineageTag: eb9b078d-f452-4f54-8458-8758e577a17c
+
+	measure 'P90 Capacity Factor' =
+			
+			PERCENTILEX.INC (
+			    FILTER (
+			        FactGeneratorMonthly,
+			        NOT ISBLANK ( FactGeneratorMonthly[capacity_factor] )
+			    ),
+			    FactGeneratorMonthly[capacity_factor],
+			    0.90
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: PERCENTILE ANALYSIS
+		lineageTag: ebfae209-40fd-4666-bc05-b5682c54be86
+
+	measure 'Median Generation (MWh)' = MEDIAN(FactGeneratorMonthly[net_generation_mwh])
+		displayFolder: PERCENTILE ANALYSIS
+		lineageTag: 58b8b99e-e169-4096-9aeb-1188bb65575c
+
+		formatStringDefinition = "#,##0 MWh"
+
+	measure 'Running Total Generation' =
+			CALCULATE(
+			                                [Total Generation (MWh)],
+			                                FILTER(
+			                                    ALL(DimGenerator),
+			                                    [Generator Generation Rank] <= [Generator Generation Rank]
+			                                )
+			                            )
+		displayFolder: PARETO/ABC ANALYSIS
+		lineageTag: 59b19983-7a89-485c-a5b6-94688e0b7b31
+
+		formatStringDefinition = "#,##0 MWh"
+
+	measure 'Pareto %' =
+			DIVIDE(
+			                [Running Total Generation],
+			                CALCULATE(
+			                    [Total Generation (MWh)], ALL(DimGenerator)
+			                ),
+			                0
+			            )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: PARETO/ABC ANALYSIS
+		lineageTag: 967f175e-4028-4b16-9175-0f83a2398404
+
+	measure 'ABC Class' =
+			SWITCH(
+			                TRUE(),
+			                [Pareto %] <= 0.80, "A - Top 80%",
+			                [Pareto %] <= 0.95, "B - Next 15%",
+			                "C - Bottom 5%"
+			            )
+		displayFolder: PARETO/ABC ANALYSIS
+		lineageTag: a2324e33-cf86-4cb8-95eb-f3852340da35
+
+	/// Standard Deviation of Capacity Factor
+	measure 'StdDev Capacity Factor' = STDEV.P(FactGeneratorMonthly[capacity_factor])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: STATISTICAL
+		lineageTag: 99f6ac65-6786-4d94-ab83-99a74d8dd87a
+
+	/// Coefficient of Variation (CV) - Measures volatility
+	measure 'CV Capacity Factor' =
+			DIVIDE(
+			                        [StdDev Capacity Factor],
+			                        [Avg Capacity Factor],
+			                        BLANK()
+			                    )
+		formatString: 0.00
+		displayFolder: STATISTICAL
+		lineageTag: 1f05f3bd-a9a4-40d4-aa13-810f8ca5f7e6
+
+	/// Correlation: Capacity vs Generation (simplified indicator)
+	/// Note: True correlation requires LINESTX or external tools
+	measure 'Generation Efficiency Score' = ```
+			DIVIDE(
+			                                    [Total Generation (MWh)], 
+			                                    [Total Capacity (MW)] * 730, // 730 hours per month average
+			                                    BLANK()
+			                                )
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: STATISTICAL
+		lineageTag: f9be02cf-639c-4464-8902-36bdc9d4e042
+
+	/// Peak Season Generation (Summer: Jun-Aug)
+	measure 'Peak Season Generation (MWh)' =
+			CALCULATE(
+			                                    [Total Generation (MWh)],
+			                                    DimDate[Season] = "Summer"
+			                                )
+		displayFolder: CONDITIONAL AGGREGATIONS WITH COMPLEX FILTER LOGIC
+		lineageTag: 97be2a57-5f68-4dbd-a214-5a6e598e3250
+
+		formatStringDefinition = "#,##0 MWh"
+
+	/// Off-Peak Season Generation
+	measure 'Off-Peak Season Generation (MWh)' =
+			CALCULATE(
+			                                        [Total Generation (MWh)],
+			                                        DimDate[Season] IN {"Winter", "Fall", "Spring"}
+			                                    )
+		displayFolder: CONDITIONAL AGGREGATIONS WITH COMPLEX FILTER LOGIC
+		lineageTag: 0e356307-55b8-4a0e-bca0-b5a4dbbe4d46
+
+		formatStringDefinition = ""
+
+	/// Peak to Off-Peak Ratio
+	measure 'Peak to Off-Peak Ratio' =
+			DIVIDE(
+			                            [Peak Season Generation (MWh)],
+			                            [Off-Peak Season Generation (MWh)],
+			                            BLANK()
+			                        )
+		formatString: 0.00
+		displayFolder: CONDITIONAL AGGREGATIONS WITH COMPLEX FILTER LOGIC
+		lineageTag: 6f2c3666-bfec-4e6f-8ebc-736c5b6cb915
+
+	/// High Capacity Factor Generators (>50%)
+	measure 'High CF Generator Count' =
+			CALCULATE(
+			                                DISTINCTCOUNT(FactGeneratorMonthly[generator_id]),
+			                                FactGeneratorMonthly[capacity_factor] < 0.10
+			                            )
+		formatString: 0
+		displayFolder: CONDITIONAL AGGREGATIONS WITH COMPLEX FILTER LOGIC
+		lineageTag: 5d749934-a004-4be1-ab84-d5b50eb495f6
+
+	/// Low Utilization Generators (<10%)
+	measure 'Low Utilization Cost' =
+			CALCULATE(
+			                            DISTINCTCOUNT(FactGeneratorMonthly[generator_id]),
+			                            FactGeneratorMonthly[capacity_factor] < 0.10
+			                        )
+		formatString: 0
+		displayFolder: CONDITIONAL AGGREGATIONS WITH COMPLEX FILTER LOGIC
+		lineageTag: 4cc88315-2dc8-4338-beb4-125d0ef2eecd
+
+	/// Generators with Missing Data
+	measure 'Incomplete Data Count' =
+			CALCULATE(
+			                            DISTINCTCOUNT(FactGeneratorMonthly[generator_id]),
+			                            FactGeneratorMonthly[data_quality_flag] = "Incomplete"
+			                        )
+		formatString: 0
+		displayFolder: CONDITIONAL AGGREGATIONS WITH COMPLEX FILTER LOGIC
+		lineageTag: 9eb17bde-f119-4c6d-9c5b-df85e062cc0c
+
+	/// Data Completeness %
+	measure 'Data Completeness %' =
+			DIVIDE(
+			                        [Total Generators] - [Incomplete Data Count],
+			                        [Total Generators],
+			                        1
+			                    )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: CONDITIONAL AGGREGATIONS WITH COMPLEX FILTER LOGIC
+		lineageTag: fd69c759-31c5-4d50-8c87-2b660e151dfa
+
+	/// Dynamic Metric Selector (use with Parameter table)
+	measure 'Selected Metric' =
+			
+			SWITCH (
+			    SELECTEDVALUE ('Metric Parameter'[Metric Parameter]),
+			    "Generation", [Total Generation (MWh)],
+			    "Capacity", [Total Capacity (MW)],
+			    "Capacity Factor", [Avg Capacity Factor],
+			    "Fuel Cost", [Total Fuel Cost ($M)],
+			    "Emissions", [Total CO2 Emissions (MT)],
+			    BLANK ()
+			)
+		displayFolder: DYNAMIC MEASURES WITH SWITCH
+		lineageTag: 3ab0418a-9bea-4760-9ea0-f2df56477728
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// Dynamic YoY Comparison
+	measure 'YoY Change (Dynamic)' = ```
+			
+			        VAR CurrentMetric = [Selected Metric]
+			        VAR PriorYearMetric = CALCULATE(
+			                                    [Selected Metric],
+			                                    SAMEPERIODLASTYEAR(DimDate[Date])
+			                                )
+			        RETURN
+			        CurrentMetric - PriorYearMetric
+			```
+		displayFolder: DYNAMIC MEASURES WITH SWITCH
+		lineageTag: 5289d62a-54e5-4ec0-acec-f6f9366f3050
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: bcfa964e-418b-4b40-8cbe-38a6b65354d3
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Advance_Analytical_Measures = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = bb2f4eaf0864404d9206fa638b6fbc59
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

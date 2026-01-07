@@ -1,0 +1,51 @@
+table 'Metric Parameter'
+	lineageTag: 03e4bef0-6d02-4f36-95a9-440049acab0a
+
+	column 'Metric Parameter'
+		lineageTag: 38055104-b0df-4cab-90ca-4c4aebf826dd
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Metric Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Metric Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Metric Parameter Fields'
+		isHidden
+		lineageTag: 30a32027-794c-4b3e-b462-2b24afee65fc
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Metric Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Metric Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: a1f33eb9-dd3e-4f44-9a6a-160033c160e5
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Metric Parameter' = calculated
+		mode: import
+		source =
+				{
+				    ("Total Generation (MWh)", NAMEOF('_Base_Aggregation_Measures'[Total Generation (MWh)]), 0),
+				    ("Total Capacity (MW) - Latest Month", NAMEOF('_Base_Aggregation_Measures'[Total Capacity (MW) - Latest Month]), 1),
+				    ("Avg Capacity Factor", NAMEOF('_Base_Aggregation_Measures'[Avg Capacity Factor]), 2),
+				    ("Total Fuel Cost ($M)", NAMEOF('_Base_Aggregation_Measures'[Total Fuel Cost ($M)]), 3),
+				    ("Total CO2 Emissions (MT)", NAMEOF('_Base_Aggregation_Measures'[Total CO2 Emissions (MT)]), 4)
+				}
+
+	annotation PBI_Id = 885fe79f5e5c476d890b23f3844a9652
+
