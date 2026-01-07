@@ -39,6 +39,7 @@ table _Time_Intelligence_Measures
 			                            DimDate[Date]
 			                        )   
 			```
+		displayFolder: QUARTER-TO-DATE (QTD)
 		lineageTag: ba62cf0c-ae1c-46c7-b7ad-27acab64a965
 
 		formatStringDefinition = "#,##0 MWh"
@@ -48,6 +49,7 @@ table _Time_Intelligence_Measures
 			                            [Total Generation (MWh)],
 			                            DimDate[Date]
 			                        )
+		displayFolder: MONTH-TO-DATE (MTD)
 		lineageTag: 96c36d19-9147-42d9-82de-88a8c7e04e63
 
 		formatStringDefinition = "#,##0 MWh"
@@ -57,11 +59,13 @@ table _Time_Intelligence_Measures
 			                            [Total Generation (MWh)],
 			                            SAMEPERIODLASTYEAR(DimDate[Date])
 			                        )
+		displayFolder: YEAR-OVER-YEAR (YoY) COMPARISONS
 		lineageTag: 8871a3eb-1c69-4f79-a456-89436972f913
 
 		formatStringDefinition = "#,##0 MWh"
 
 	measure 'YoY Growth (MWh)' = [Total Generation (MWh)] - [PY Generation (MWh)]
+		displayFolder: YEAR-OVER-YEAR (YoY) COMPARISONS
 		lineageTag: bf534c1c-bd3f-4dd5-bb8a-c942b20e3291
 
 		formatStringDefinition = "#,##0 MWh"
@@ -73,6 +77,7 @@ table _Time_Intelligence_Measures
 			                    BLANK()
 			                )
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: YEAR-OVER-YEAR (YoY) COMPARISONS
 		lineageTag: a21f9971-772b-4627-b87e-f3f907b7b711
 
 	measure 'PY Capacity (MW)' =
@@ -80,14 +85,82 @@ table _Time_Intelligence_Measures
 			                        [Total Capacity (MW)],
 			                        SAMEPERIODLASTYEAR(DimDate[Date])
 			                    )
+		displayFolder: YEAR-OVER-YEAR (YoY) COMPARISONS
 		lineageTag: 0a2d0846-35b4-4fff-9d60-bcd3df74be1c
 
 		formatStringDefinition = " #,##0.0 MW"
 
 	measure 'YoY Capacity Change (MW)' = [Total Capacity (MW)] - [PY Capacity (MW)]
+		displayFolder: YEAR-OVER-YEAR (YoY) COMPARISONS
 		lineageTag: 39222a85-0ca0-47d7-9d49-7ebc72619fe3
 
 		formatStringDefinition = "+#,##0.0;-#,##0.0;0.0 MW"
+
+	measure 'PM Generation (MWh)' =
+			CALCULATE(
+			                            [Total Generation (MWh)],
+			                            DATEADD(DimDate[Date], -1, MONTH)
+			                        )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: MONTH-OVER-MONTH (MoM) COMPARISONS
+		lineageTag: 1020a00a-f7c8-46fb-b8fb-592010f25184
+
+	measure 'MoM Growth %' =
+			DIVIDE(
+			                    [Total Generation (MWh)] - [PM Generation (MWh)],
+			                    [PM Generation (MWh)],
+			                    BLANK()
+			                )
+		displayFolder: MONTH-OVER-MONTH (MoM) COMPARISONS
+		lineageTag: 521c437f-054f-4fcd-a6f0-e163d7f9fa9d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3M Avg Generation (MWh)' = ```
+			
+			        VAR CurrentDate = MAX(DimDate[Date])
+			        VAR Last3Months = DATESINPERIOD(
+			                                    DimDate[Date], CurrentDate, -3, MONTH
+			                                )
+			        RETURN
+			            CALCULATE(
+			                AVERAGE(FactGeneratorMonthly[net_generation_mwh]),
+			                Last3Months
+			            )
+			```
+		displayFolder: ROLLING AVERAGES
+		lineageTag: ba02bac1-4f5d-4fa7-96a9-bb58dd4b28ea
+
+		formatStringDefinition = "#,##0 MWh"
+
+	measure '12M Avg Capacity Factor' = ```
+			
+			VAR CurrentDate = MAX (DimDate[Date])
+			VAR Last12Months = 
+			    DATESINPERIOD (
+			        DimDate[Date],
+			        CurrentDate,
+			        -12,
+			        MONTH
+			    )
+			RETURN
+			    CALCULATE (
+			        [Avg Capacity Factor],
+			        Last12Months
+			    )
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: ROLLING AVERAGES
+		lineageTag: 13e49bdd-373e-43c6-9923-4fc836998e74
+
+	measure 'SPLY YTD Generation (MWh)' =
+			CALCULATE(
+			                                [YTD Generation (MWh)],
+			                                SAMEPERIODLASTYEAR(DimDate[Date])
+			                            )
+		lineageTag: 9cc6e5e7-334d-4ad7-a946-b7a79057bb29
+
+		formatStringDefinition = "#,##0 MWh"
 
 	column Column
 		isHidden
