@@ -24,6 +24,7 @@ ref table _Base_Aggregation_Measures
 ref table _Time_Intelligence_Measures
 ref table _Advance_Analytical_Measures
 ref table 'Metric Parameter'
+ref table LocalDateTable_3fa2870f-c43f-4cc0-909d-6d21e0b8e4b0
 
 ref cultureInfo en-US
 

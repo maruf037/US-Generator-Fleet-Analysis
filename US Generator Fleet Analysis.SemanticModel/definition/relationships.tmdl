@@ -23,3 +23,8 @@ relationship 28b78fc4-d242-bf62-4108-79583849d415
 	fromColumn: FactGeneratorMonthly.GeneratorKey
 	toColumn: DimGenerator.GeneratorKey
 
+relationship 75012203-4a4f-4814-a01f-53fdc50f9db4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimGenerator.generator_operating_date
+	toColumn: LocalDateTable_3fa2870f-c43f-4cc0-909d-6d21e0b8e4b0.Date
+

@@ -66,6 +66,38 @@ table DimGenerator
 
 		annotation SummarizationSetBy = Automatic
 
+	column generator_operating_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c00a209e-bbe1-4134-ae53-2a29867040df
+		summarizeBy: none
+		sourceColumn: generator_operating_date
+
+		variation Variation
+			isDefault
+			relationship: 75012203-4a4f-4814-a01f-53fdc50f9db4
+			defaultHierarchy: LocalDateTable_3fa2870f-c43f-4cc0-909d-6d21e0b8e4b0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column generator_retirement_date
+		dataType: string
+		lineageTag: 26c3fe86-7d87-4a0a-8c3c-4e4cb3ef492e
+		summarizeBy: none
+		sourceColumn: generator_retirement_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column planned_generator_retirement_date
+		dataType: string
+		lineageTag: cef4f5ce-d8ad-4ae1-9d80-107a45735db9
+		summarizeBy: none
+		sourceColumn: planned_generator_retirement_date
+
+		annotation SummarizationSetBy = Automatic
+
 	partition DimGenerator = m
 		mode: import
 		source =
@@ -77,7 +109,10 @@ table DimGenerator
 				        "generator_id",
 				        "fuel_type_code_pudl",
 				        "technology_description",
-				        "prime_mover_code"
+				        "prime_mover_code",
+				        "generator_operating_date",
+				        "generator_retirement_date",
+				        "planned_generator_retirement_date"
 				    }),
 				
 				    RemoveNulls = Table.SelectRows(
@@ -148,9 +183,10 @@ table DimGenerator
 				        "is_renewable",
 				        each List.Contains({"Solar", "Wind", "Hydro"}, [technology_category]),
 				        type logical
-				    )
+				    ),
+				    #"Changed Type" = Table.TransformColumnTypes(AddRenewable,{{"generator_operating_date", type date}})
 				in
-				    AddRenewable
+				    #"Changed Type"
 
 	annotation PBI_NavigationStepName = Navigation
 
