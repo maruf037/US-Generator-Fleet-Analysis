@@ -254,6 +254,86 @@ table _Advance_Analytical_Measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Renewable Energy Penetration Rate
+	measure 'Renewable Penetration %' =
+			DIVIDE(
+			                            CALCULATE(
+			                                [Total Generation (MWh)],
+			                                DimGenerator[is_renewable] = TRUE()
+			                            ),
+			                            [Total Generation (MWh)]
+			                        )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: COMPLEX BUSINESS LOGIC
+		lineageTag: 33c59155-21b1-4808-a46a-b261b830ee93
+
+	/// Fossil Fuel Dependence
+	measure 'Fossil Fuel Generation %' =
+			DIVIDE(
+			                                CALCULATE(
+			                                    [Total Generation (MWh)],
+			                                    DimGenerator[technology_category] IN {"Coal", "Natural Gas", "Petroleum"}
+			                                ),
+			                                [Total Generation (MWh)]
+			                            )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: COMPLEX BUSINESS LOGIC
+		lineageTag: 6bf021a7-119e-40e9-92c0-13dc51aded8a
+
+	/// Battery Storage Capacity (MW)
+	measure 'Battery Storage Capacity (MW)' =
+			CALCULATE(
+			                                    [Total Generation (MWh)],
+			                                    DimGenerator[technology_description] = "Batteries"
+			                                )
+		displayFolder: COMPLEX BUSINESS LOGIC
+		lineageTag: 08d884f8-6fc9-45ea-aff5-0c97caeafb60
+
+		formatStringDefinition = "#,##0.0 MW"
+
+	/// New Installations This Year (generators with operating date in current year)
+	measure 'New Installations Count' =
+			CALCULATE(
+			                                DISTINCTCOUNT(DimGenerator[generator_id]),
+			                                YEAR(DimGenerator[generator_operating_date]) = MAX(DimDate[Year])
+			                            )
+		formatString: 0
+		displayFolder: COMPLEX BUSINESS LOGIC
+		lineageTag: 6aebd7c3-bdbb-445c-a1ce-bd2ecb25146a
+
+	/// Generator Retirements This Year
+	measure 'Retirements Count' = ```
+			CALCULATE(
+			                        DISTINCTCOUNT(DimGenerator[generator_id]),
+			                        NOT ISBLANK(DimGenerator[generator_retirement_date]) 
+			                        && YEAR(DimGenerator[generator_retirement_date]) = MAX(DimDate[Year])
+			                    )
+			```
+		formatString: 0
+		displayFolder: COMPLEX BUSINESS LOGIC
+		lineageTag: a400edf3-707c-4781-89da-fbb9b37a88e9
+
+	/// Net Capacity Change (Additions - Retirements)
+	measure 'Net Capacity Change (MW)' = ```
+			
+			VAR NewCapacity = 
+			    CALCULATE (
+			        SUM ( DimGenerator[capacity_mw] ),
+			        YEAR ( DimGenerator[generator_operating_date] ) = MAX ( DimDate[Year] )
+			    )
+			VAR RetiredCapacity = 
+			    CALCULATE (
+			        SUM ( DimGenerator[capacity_mw] ),
+			        YEAR ( DimGenerator[generator_retirement_date] ) = MAX ( DimDate[Year] )
+			    )
+			RETURN
+			    NewCapacity - RetiredCapacity
+			```
+		displayFolder: COMPLEX BUSINESS LOGIC
+		lineageTag: febecfe8-6468-4664-8143-288ff1cb190a
+
+		formatStringDefinition = "+#,##0.0;-#,##0.0;0.0 MW"
+
 	column Column
 		isHidden
 		formatString: 0

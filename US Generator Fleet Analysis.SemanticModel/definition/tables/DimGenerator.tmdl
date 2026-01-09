@@ -98,6 +98,16 @@ table DimGenerator
 
 		annotation SummarizationSetBy = Automatic
 
+	column capacity_mw
+		dataType: double
+		lineageTag: db2bee49-1cb1-4139-8816-a51dd72a73e3
+		summarizeBy: sum
+		sourceColumn: capacity_mw
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition DimGenerator = m
 		mode: import
 		source =
@@ -107,6 +117,7 @@ table DimGenerator
 				SelectColumns = Table.SelectColumns(Source, {
 				        "plant_id_eia",
 				        "generator_id",
+				        "capacity_mw",
 				        "fuel_type_code_pudl",
 				        "technology_description",
 				        "prime_mover_code",
@@ -184,7 +195,7 @@ table DimGenerator
 				        each List.Contains({"Solar", "Wind", "Hydro"}, [technology_category]),
 				        type logical
 				    ),
-				    #"Changed Type" = Table.TransformColumnTypes(AddRenewable,{{"generator_operating_date", type date}})
+				    #"Changed Type" = Table.TransformColumnTypes(AddRenewable,{{"generator_operating_date", type date}, {"capacity_mw", type number}})
 				in
 				    #"Changed Type"
 
