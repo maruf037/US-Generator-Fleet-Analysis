@@ -236,6 +236,41 @@ table FactGeneratorMonthly
 
 		annotation SummarizationSetBy = Automatic
 
+	column YearMonth = FORMAT(FactGeneratorMonthly[report_date], "YYYYMM")
+		lineageTag: 59fdc54a-250b-4211-95df-0a68579fa8e4
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Generation Band' =
+			SWITCH(
+			                    TRUE(),
+			                    FactGeneratorMonthly[net_generation_mwh] >= 100000, "Very High (>100k MWh)",
+			                    FactGeneratorMonthly[net_generation_mwh] >= 10000, "High (10k to 100k MWh)",
+			                    FactGeneratorMonthly[net_generation_mwh] >= 1000, "Medium (1k to 10k)",
+			                    FactGeneratorMonthly[net_generation_mwh] > 0, "Low (<1k MWh)",
+			                    "No Generation"
+			                )
+		lineageTag: c854b0cd-b334-4e5e-a781-53a5c79e5af6
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CF Band' =
+			SWITCH(
+			            TRUE(),
+			            ISBLANK(FactGeneratorMonthly[capacity_factor]), "No Data",
+			            FactGeneratorMonthly[capacity_factor] >= 0.70, "Excellent (≥70%)",
+			            FactGeneratorMonthly[capacity_factor] >= 0.50, "Good (50-70%)",
+			            FactGeneratorMonthly[capacity_factor] >= 0.30, "Fair (30-50%)",
+			            FactGeneratorMonthly[capacity_factor] >= 0.10, "Poor (10-30%)",
+			            "Very Poor (<10%)"
+			        )
+		lineageTag: fc5971ec-4ef6-4458-84ab-5ff000249bd0
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition FactGeneratorMonthly = m
 		mode: import
 		source = ```

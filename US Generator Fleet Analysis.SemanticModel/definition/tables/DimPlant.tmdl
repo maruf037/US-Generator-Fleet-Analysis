@@ -110,6 +110,27 @@ table DimPlant
 
 		annotation SummarizationSetBy = Automatic
 
+	/// State-County Combination (for geography drill)
+	column State-County = DimPlant[state] & "-" & DimPlant[county]
+		lineageTag: f17bb5e5-a59a-49e9-b34a-3287d712a23c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Coastal Plant' =
+			IF(
+			                    DimPlant[state] IN { "CA", "OR", "WA", "AK", "HI",
+			        "TX", "LA", "MS", "AL", "FL", "GA", "SC", "NC", "VA", "MD", "DE", "NJ", "NY", "CT", "RI", "MA", "NH", "ME"
+			                    },
+			                    TRUE(),
+			                    FALSE()
+			                )
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c360bada-ec49-424b-8d57-7fca5a73a859
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	hierarchy 'Geographic Hierarchy'
 		lineageTag: 3f0176eb-1679-4d57-98fc-d43e38ef8d69
 

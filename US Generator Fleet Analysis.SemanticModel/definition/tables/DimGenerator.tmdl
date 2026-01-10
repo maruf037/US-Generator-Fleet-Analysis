@@ -108,6 +108,56 @@ table DimGenerator
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Age in Years (as of today)
+	column 'Generator Age (Years)' =
+			DATEDIFF(
+			                            DimGenerator[generator_operating_date],
+			                            TODAY(),
+			                            YEAR
+			                        )
+		formatString: 0
+		lineageTag: 89719199-81d2-4708-8aea-6d0b72e35c32
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Is Near Retirement (within 5 years of planned retirement)
+	column 'Is Near Retirement' = ```
+			IF(
+			                        NOT ISBLANK(DimGenerator[generator_retirement_date]) 
+			                        && DATEDIFF(
+			                            TODAY(),
+			                            DimGenerator[planned_generator_retirement_date],
+			                            YEAR
+			                        ) <= 5,
+			                        TRUE(),
+			                        FALSE()
+			                    )
+			```
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 03392354-6b9a-4351-909a-8f2bb2256f9e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Technology Group' =
+			
+			SWITCH (
+			    DimGenerator[prime_mover_code],
+			    "PV", "Solar PV",
+			    "WT", "Wind",
+			    "HY", "Hydro",
+			    "ST", "Steam Turbine",
+			    "GT", "Gas Turbine",
+			    "IC", "Internal Combustion",
+			    "BA", "Battery Storage",
+			    "Other"
+			)
+		lineageTag: 0b12b257-6c18-4847-9ece-63c5e2449579
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition DimGenerator = m
 		mode: import
 		source =
