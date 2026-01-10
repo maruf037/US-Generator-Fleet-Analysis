@@ -1,0 +1,85 @@
+table 'Time Calculations'
+	lineageTag: 7a388869-d90d-4b45-8b76-f7bcc8f357c5
+
+	calculationGroup
+
+		calculationItem Current = SELECTEDMEASURE()
+
+		calculationItem PY =
+				CALCULATE(
+				        SELECTEDMEASURE(),
+				        SAMEPERIODLASTYEAR(DimDate[Date])
+				    )
+
+		calculationItem YTD =
+				CALCULATE(
+				        SELECTEDMEASURE(),
+				        DATESYTD(DimDate[Date])
+				    )
+
+		calculationItem 'PY YTD' =
+				CALCULATE(
+				            SELECTEDMEASURE(),
+				            DATESYTD(DimDate[Date]),
+				            SAMEPERIODLASTYEAR(DimDate[Date])
+				        )
+
+		calculationItem 'YoY Change' = ```
+				
+				        VAR Now = SELECTEDMEASURE()
+				        VAR PY = CALCULATE(
+				                    SELECTEDMEASURE(),
+				                    SAMEPERIODLASTYEAR(DimDate[Date])
+				                )
+				        RETURN 
+				            Now - PY
+				```
+
+		calculationItem 'YOY %' = ```
+				
+				    VAR Now = SELECTEDMEASURE()
+				    VAR PY = CALCULATE(
+				                SELECTEDMEASURE(),
+				                SAMEPERIODLASTYEAR(DimDate[Date])
+				            )
+				    RETURN
+				        DIVIDE((Now - PY), PY)
+				```
+
+		calculationItem '3M MA' = ```
+				
+				    VAR CurrentDate = MAX(DimDate[Date])
+				    VAR Last3Months = DATESINPERIOD(
+				                            DimDate[Date],
+				                            CurrentDate, 
+				                            -3,
+				                            MONTH
+				                        )
+				    RETURN
+				        CALCULATE(
+				            AVERAGEX(
+				                VALUES(DimDate[Date]),
+				                SELECTEDMEASURE()
+				            ),
+				            Last3Months
+				        )
+				```
+
+	column 'Calculation group column'
+		dataType: string
+		lineageTag: dfffb1d6-95fb-4a9e-b8c7-c8fcdb28ebf9
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: db62a118-2216-43a3-a646-522a9dcdf9d3
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
